@@ -1,6 +1,6 @@
 # Route Rater
 
-An idea developed at the ODI Leeds #hackmyroute day. 
+An idea developed at the ODI Leeds [#hackmyroute](https://twitter.com/search?q=%23hackmyroute&src=typd) day. 
 
 The initial idea was to create a colour-coded map of the streets using crowd sourcing. It developed to include a feedback mechanism where cyclists could easily report things about their route.
 
