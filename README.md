@@ -37,7 +37,7 @@ We need a starting [list of things](list.md) to record and a decision tree for t
 
 ## Lines
 
-The harder problem is to get a rating for segments of road. These ratings should be based on an aggregate of all user input but also needs to be able to change with time if, say, a road or path is closed or if a problem gets fixed. Problems:
+The harder problem is to get a rating for segments of road. These ratings should be based on an aggregate of all user input but also needs to be able to change with time if, say, a road or path is closed or if a problem gets fixed.
 
 
 ## Problems

@@ -1,17 +1,43 @@
 {
 	"moments": [
+		"intersection": {
+			"title": "Intersection"
+		},
+		"amenities": {
+		
+		},
 		"incident" : {
-			"title": "Incident",
-			"children": [
+			"title": "Incident"
+			"children": {
 				"nearmiss": {
 					"title": "Near miss",
-					"desc": "A near miss with a motorised vehicle"
+					"desc": "A near miss with a motorised vehicle",
+					"children": {
+						"bus": {
+							"title": "Bus/tram"
+							"desc" : "A near miss with a bus or tram"
+						},
+						"car": {
+							"title": "Car"
+							"desc": "A near miss with a car"
+						},
+						"taxi": {
+							"title": "Taxi"
+							"desc": "A near miss with a taxi"
+						},
+						"van": {
+							"title": "Van"
+							"desc": "A near miss with a van"
+						}
+					}
 				},
 				"rta": {
 					"title": "Road traffic accident",
 					"desc": "Involved in a road traffic accident"
+					"positive": false,
+					"negative": true
 				}
-			]
+			}
 		]
 	]
 }

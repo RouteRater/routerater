@@ -6,12 +6,14 @@ The list should include things cyclists (of all abilities) would want to report 
     * Car
     * Taxi
     * Van/truck
+    * Bicycle
     * Other
   * Collision/Road-traffic accident
     * Bus/tram
     * Car
     * Taxi
     * Van/truck
+    * Bicycle
     * Other
 * Intersection
   * Busy
@@ -22,7 +24,8 @@ The list should include things cyclists (of all abilities) would want to report 
   * Uneven surface
 * Cycle lane
   * Good
-  * Obstruction in bike lane e.g. bollard or sign post
+  * Street furniture in bike lane e.g. bollard or sign post
+  * Obstruction in bike lane e.g. car
   * Confusing
 * Other
   * Cycle-friendly cafe
