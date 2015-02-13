@@ -20,11 +20,7 @@ We want to provide a map of someone's area showing them which bits are easier an
 
 A mechanism for people to record feedback about specific points in space (longitude/latitude). They could use an app (perhaps through an interface to an existing app such as [CycleStreets](http://www.cyclestreets.net/)) or report points via their computer. We want to present a simple interface that gives people a basic decision tree to make the process quick and painless. We could also let power users report things from a bigger list of items.
 
-We need a starting list of things to record and a decision tree for things we think are the most common.
-
-* Accident
-  * Near-miss
-  * Collision
+We need a starting [list of things](list.md) to record and a decision tree for things we think are the most common.
 
 ## Lines
 
