@@ -50,7 +50,8 @@
 					"incident_nearmiss_bus",
 					"incident_nearmiss_car",
 					"incident_nearmiss_van",
-					"incident_nearmiss_bike"
+					"incident_nearmiss_bike",
+					"incident_nearmiss_person"
 				]
 			},{
 				"text": "Road traffic accident",
