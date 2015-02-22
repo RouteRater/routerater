@@ -6,6 +6,8 @@
 		"road_fast": { "title": "Road: fast", "desc": "A road with fast traffic", "img": "" },
 		"road_quiet": { "title": "Road: quiet", "desc": "A quiet road", "img": "" },
 		"road_uneven": { "title": "Road: uneven", "desc": "A road with an uneven or bumpy surface", "img": "" },
+		"signage_good": { "title": "Signage: good", "desc": "Good or clear signage", "keywords": ["sign"], "img": "" },
+		"signage_poor": { "title": "Signage: poor", "desc": "Bad or unclear signage", "keywords": ["sign"], "img": "" },
 		"cpath_good": { "title": "Cycle-path: good", "desc": "A good section of cycle path", "img": "" },
 		"cpath_obstruct_perm": { "title": "Cycle-path: obstructed by street furniture", "desc": "Street furniture in bike lane e.g. a bollard or sign post", "img": "" },
 		"cpath_obstruct_temp": { "title": "Cycle-path: obstructed by vehicle", "desc": "A temporary obstruction in a bike lane", "img": "" },
