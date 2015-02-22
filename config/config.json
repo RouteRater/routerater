@@ -1,7 +1,7 @@
 {
 	"moments": {
 		"junction_busy": { "title": "Junction: busy", "desc": "Busy junction", "img": "" },
-		"junction_confusing": { "title": "Junction: confusing", "desc": "Confusing or badly signed junction", "img": "" },
+		"junction_confusing": { "title": "Junction: confusing", "desc": "Confusing or badly signed junction", "keywords": ["complicated","confusing","signage"], "img": "" },
 		"road_busy": { "title": "Road: busy", "desc": "Busy road", "img": "" },
 		"road_fast": { "title": "Road: fast", "desc": "Road with fast traffic", "img": "" },
 		"road_quiet": { "title": "Road: quiet", "desc": "Quiet road", "img": "" },
@@ -9,7 +9,7 @@
 		"cpath_good": { "title": "Cycle-path: good", "desc": "Good cycle path", "img": "" },
 		"cpath_obstruct_perm": { "title": "Cycle-path: obstructed by street furniture", "desc": "Street furniture in bike lane e.g. bollard or sign post", "img": "" },
 		"cpath_obstruct_temp": { "title": "Cycle-path: obstructed by vehicle", "desc": "Temporary obstruction in cycle path", "img": "" },
-		"cpath_confusing": { "title": "Cycle-path: confusing", "desc": "Confusing cycle path", "img": "" },
+		"cpath_confusing": { "title": "Cycle-path: confusing", "desc": "Confusing cycle path", "keywords": ["complicated","confusing"], "img": "" },
 		"cfriend_cafe": { "title": "Cycle-friendly: cafe", "desc": "A cafe that welcomes bicycles", "img": "" },
 		"cfriend_pub": { "title": "Cycle-friendly: pub", "desc": "A pub that welcomes bicycles", "img": "" },
 		"incident_nearmiss_bus": { "title": "Near miss: bus/tram", "desc": "Near miss with a bus or tram", "img": "" },

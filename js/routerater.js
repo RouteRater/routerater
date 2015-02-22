@@ -87,21 +87,42 @@ RouteRater.prototype.search = function(str){
 	var html = "";
 	// Return a score for how well a pattern matches a string
 	function getScore(str,pattern){
-		var score = 0;
-		var i = str.toLowerCase().indexOf(pattern.toLowerCase());
-		if(i >= 0){
-			score += 1/i;//(str.length - i)/str.length;
-			if(i == 0) score += 1.5;
-			else{
-				if(str.substr(i-1,1).match(/[^A-Za-z]/)) score += 1;
+		if(pattern=="") return 0;
+
+		var words = pattern.split(/[\W]/);
+		var scores = [];
+		for(var w = 0; w < words.length; w++){
+			var score = 0;
+			var i = str.toLowerCase().indexOf(words[w].toLowerCase());
+			if(i >= 0){
+				score += 1/(i+1);//(str.length - i)/str.length;
+				if(i == 0) score += 1.5;
+				else{
+					if(str.substr(i-1,1).match(/[^A-Za-z]/)) score += 1;
+				}
+				// If this matches a word exactly we increase the weight
+				if(str.substr(i-1,1).match(/[^A-Za-z]/) && str.substr(i+words[w].length,1).match(/[^A-Za-z]/)) score += 1;
 			}
+			scores.push(score);
 		}
-		return score;
+		var n = 0;
+		var t = 0;
+		for(var s = 0; s < scores.length; s++){
+			if(scores[s] > 0) n++;
+			t += scores[s];
+		}
+		if(n==scores.length) return t/n;
+		else return 0;
 	}
 	if(str){
 		for(var mom in this.data.moments){
 			var score = getScore(this.data.moments[mom].title,str);
-			score += getScore(this.data.moments[mom].desc,str)/4;	// Also search the description
+			score += getScore(this.data.moments[mom].desc,str)/4;	// Also search the description but give it lower weight
+			if(this.data.moments[mom].keywords){
+				for(var k = 0; k < this.data.moments[mom].keywords.length; k++){
+					score += getScore(this.data.moments[mom].keywords[k],str);
+				}
+			}
 			results.push([this.data.moments[mom],score])
 		}
 		// Get order
@@ -109,7 +130,7 @@ RouteRater.prototype.search = function(str){
 
 		html = '<ul>';
 		for(var i = 0; i < results.length; i++){
-			if(results[i][1] > 0) html += '<li><a href="" data="'+i+'">'+results[i][0].title+'</a></li>';
+			if(results[i][1] > 0 && results[i][1] > results[0][1]/10) html += '<li><a href="" data="'+i+'"><span class="score">'+Math.round(100*results[i][1]/results[0][1])+'% match</span>'+results[i][0].title+'</a></li>';
 		}
 		html += "</ul>";
 	}

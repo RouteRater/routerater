@@ -56,6 +56,10 @@ ul {
 	text-decoration: none;
 	color: black;
 }
+#typeahead li a .score {
+	float: right;
+	color: #bfbfbf;
+}
 #typeahead li a:focus,#typeahead li a:hover,#typeahead li a.selected {
 	background-color: #efefef;
 }
