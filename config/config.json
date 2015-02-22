@@ -1,5 +1,9 @@
 {
 	"moments": {
+		"grade_green": { "title": "Grade: green (beginner)", "desc": "Off-road/separate to vehicles/gentle gradients", "img": "" },
+		"grade_blue": { "title": "Grade: blue (intermediate)", "desc": "Some or limited experience. Residential roads/low traffic/slow speeds", "img": "" },
+		"grade_red": { "title": "Grade: red (hard)", "desc": "Busy roads/heavy traffic/filter lanes/big roundabouts/traffic lights", "img": "" },
+		"grade_black": { "title": "Grade: black (extreme)", "desc": "Multi-lane sections/gyratories/lots of experience and luck", "img": "" },
 		"junction_busy": { "title": "Junction: busy", "desc": "A busy junction", "img": "" },
 		"junction_confusing": { "title": "Junction: confusing", "desc": "A confusing or badly-signed junction", "keywords": ["complicated","confusing","signage"], "img": "" },
 		"road_busy": { "title": "Road: busy", "desc": "A busy road with heavy traffic", "img": "" },
