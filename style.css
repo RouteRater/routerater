@@ -12,13 +12,15 @@ ul {
 
 #wrapper {
 	width: 1100px;
-	padding: 10px;
+	max-width: 100%;
+	padding: 0px;
 	margin-left:  auto;
 	margin-right:  auto;
 }
 
 #content {
 	width: 950px;
+	max-width: 95%;
 	margin-top: 10px;
 	padding-bottom: 10px;
 	margin-left:  auto;
@@ -59,6 +61,15 @@ ul {
 #typeahead li a .score {
 	float: right;
 	color: #bfbfbf;
+}
+#typeahead li a .title {
+	display: block;
+	font-size: 1em;
+}
+#typeahead li a .desc {
+	display: block;
+	font-size: 0.5em;
+	color: #909090;
 }
 #typeahead li a:focus,#typeahead li a:hover,#typeahead li a.selected {
 	background-color: #efefef;
