@@ -129,7 +129,8 @@ RouteRater.prototype.search = function(str){
 		var results = results.sort(function(a, b) {return b[1] - a[1]});
 
 		html = '<ul>';
-		for(var i = 0; i < results.length; i++){
+		n = Math.min(10,results.length)
+		for(var i = 0; i < n; i++){
 			if(results[i][1] > 0 && results[i][1] > results[0][1]/10) html += '<li><a href="" data="'+i+'"><span class="score">'+Math.round(100*results[i][1]/results[0][1])+'% match</span><span class="title">'+results[i][0].title+'</span><span class="desc">'+results[i][0].desc+'</span></a></li>';
 		}
 		html += "</ul>";
