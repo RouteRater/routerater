@@ -105,6 +105,9 @@ nav.navbar li.active a, ul.nav a:hover, ul.nav a:focus { background-color: #e7e7
 	background-color: #e7e7e7;
 }
 
+input.fullwidth {
+	width: 100%;
+}
 
 .sr-only {
 	border: 0 none;

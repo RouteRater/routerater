@@ -13,7 +13,7 @@
 		"signage_good": { "title": "Signage: good", "desc": "Good or clear signage", "keywords": ["sign"], "img": "" },
 		"signage_poor": { "title": "Signage: poor", "desc": "Bad or unclear signage", "keywords": ["sign"], "img": "" },
 		"cpath_good": { "title": "Cycle-path: good", "desc": "A good section of cycle path", "img": "" },
-		"cpath_obstruct_perm": { "title": "Cycle-path: obstructed by street furniture", "desc": "Street furniture in bike lane e.g. a bollard or sign post", "img": "" },
+		"cpath_obstruct_perm": { "title": "Cycle-path: obstructed by street furniture", "desc": "Street furniture in bike lane e.g. a bollard or sign-post", "keywords": ["sign-post","lamp-post","bollard","post","fence","street light"], "img": "" },
 		"cpath_obstruct_temp": { "title": "Cycle-path: obstructed by vehicle", "desc": "A temporary obstruction in a bike lane", "img": "" },
 		"cpath_confusing": { "title": "Cycle-path: confusing", "desc": "A particularly complicated section of cycle path", "keywords": ["complicated","confusing"], "img": "" },
 		"cfriend_cafe": { "title": "Cycle-friendly: cafe", "desc": "A cafe that welcomes people with bicycles", "img": "" },

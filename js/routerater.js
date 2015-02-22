@@ -14,7 +14,7 @@ function RouteRater(data){
 RouteRater.prototype.typeahead = function(id){
 	var t = 'typeahead';
 
-	if($('#'+id).length == 0) $('#main').prepend('<h3><label for="filter">Find:</label> <input type="text" name="filter" id="filter" placeholder="Find e.g. Busy road, good cycle path" /></h3>');
+	if($('#'+id).length == 0) $('#main').prepend('<h3><label for="filter" class="sr-only">Find:</label> <input type="text" name="filter" id="filter" class="fullwidth" placeholder="Find e.g. Busy road, good cycle path" /></h3>');
 
 	// Add the typeahead div and hide it
 	$('#main').append('<div id="'+t+'"></div>');
