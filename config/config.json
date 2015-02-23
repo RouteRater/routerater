@@ -10,6 +10,7 @@
 		"road_fast": { "title": "Road: fast", "desc": "A road with fast traffic", "img": "" },
 		"road_quiet": { "title": "Road: quiet", "desc": "A quiet road", "img": "" },
 		"road_uneven": { "title": "Road: uneven", "desc": "A road with an uneven or bumpy surface", "img": "" },
+		"road_pothole": { "title": "Road: pothole", "desc": "A hole in the road", "img": "" },
 		"lighting_good": { "title": "Lighting: good", "desc": "Well lit at night", "img": "" },
 		"lighting_poor": { "title": "Lighting: poor", "desc": "Badly lit at night", "img": "" },
 		"intimidating": { "title": "Intimidating", "desc": "Uncomfortable location", "img": "" },
