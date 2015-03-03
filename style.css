@@ -40,9 +40,17 @@ ul { list-style-type: none; }
 	margin-right:  auto;
 }
 
-
 /* Navigation styles */
 nav.navbar { background-color: #f8f8f8; border-bottom: 1px solid #e7e7e7; margin-bottom: 2em; }
+body.map nav.navbar { margin-bottom: 0px; }
+body.map #content {
+	bottom: 0px;
+	max-width: 100%;
+	position: absolute;
+	top: 49px;
+	width: 100%;
+}
+body.map #main { height: 100%; }
 #navbar { float: right; }
 ul.nav { display: inline-block; }
 ul.nav li { display: inline-block; }
