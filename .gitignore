@@ -22,3 +22,7 @@ _site/
 ._*
 Thumbs.db
 .cache
+
+# Stuart's stuff
+backend/
+tiles.zip
