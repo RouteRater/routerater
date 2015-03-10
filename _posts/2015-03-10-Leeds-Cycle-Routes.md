@@ -8,7 +8,7 @@ In making _Route Rater_ we've trying to make use data provided by the [Leeds Dat
 There is an increasing amount of open source software for dealing with geographic data. One is named [GDAL](http://www.gdal.org/). There are a variety of [binaries available for Linux, MacOSX and Windows](http://trac.osgeo.org/gdal/wiki/DownloadingGdalBinaries) but I found my operating system is too old to install those. In the end I followed [a good tutorial on installation of GDAL](http://bost.ocks.org/mike/map/) using Ruby and Homebrew which boiled down to:
 
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-    brew install gdal`
+    brew install gdal
 
 It takes a while.
 
