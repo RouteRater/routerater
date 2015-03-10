@@ -14,14 +14,21 @@ The [Leeds Data Mill](http://leedsdatamill.org/) provides [Leeds City Council cy
 
 ### [GDAL](http://www.gdal.org/) installation
 I installed Homebrew 
+
   ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
 and then used that to install GDAL 
+
   brew install gdal
+
 It takes a while to install.
 
 
 First I converted the LCC Shapefile to the WGS84 projection system (normal longitude/latitude rather than Ordnance Survey's Eastings/Northings) using:
+
   ogr2ogr -t_srs "EPSG:4326" cycle-routes/PLAN_CYCLE_ROUTES_reprojected.shp cycle-routes/PLAN_CYCLE_ROUTES.shp
+
 Next I created a GeoJSON file from that:
+
   ogr2ogr -t_srs EPSG:4326 -f GeoJSON -lco COORDINATE_PRECISION=7 lcc_reproject.geojson cycle-routes/PLAN_CYCLE_ROUTES_reprojected.shp
 
