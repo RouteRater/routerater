@@ -7,17 +7,18 @@ In making _Route Rater_ we've trying to make use data provided by the [Leeds Dat
 
 There is an increasing amount of open source software for dealing with geographic information systems (GIS) data. One is named [GDAL](http://www.gdal.org/). There are a variety of [binaries available for Linux/MacOSX/Windows](http://trac.osgeo.org/gdal/wiki/DownloadingGdalBinaries) but I found my operating system is too old so ended up following [a good tutorial on installation](http://bost.ocks.org/mike/map/) using Ruby and Homebrew which boiled down to:
 
-`ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
-`brew install gdal`
+    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    brew install gdal`
 
 It takes a while to install.
 
 With the appropriate software installed, it was time to convert this into a GeoJSON file using the command line tool `ogr2ogr` that is part of GDAL. The first time I did this I ended up with crazy results. All the longitudes and latitudes were huge numbers that were not in the range 0-360 degrees (or 0-180). It turns out that the Leeds City Council shapefiles are stored in an Ordnance Survey map projection that uses Eastings and Northings on the UK grid. After a bit of searching I discovered that `ogr2ogr` can convert this into the more common WGS84 projection (normal longitudes and latitudes) by using the flag `-t_srs "EPSG:4326"`:
 
-`ogr2ogr -t_srs "EPSG:4326" PLAN_CYCLE_ROUTES_reprojected.shp PLAN_CYCLE_ROUTES.shp`
+    ogr2ogr -t_srs "EPSG:4326" PLAN_CYCLE_ROUTES_reprojected.shp PLAN_CYCLE_ROUTES.shp
 
 Note that the input file is second and the output file is first. Next I created a GeoJSON file from that:
-`ogr2ogr -t_srs EPSG:4326 -f GeoJSON -lco COORDINATE_PRECISION=7 lcc.geojson PLAN_CYCLE_ROUTES_reprojected.shp`
+
+    ogr2ogr -t_srs EPSG:4326 -f GeoJSON -lco COORDINATE_PRECISION=7 lcc.geojson PLAN_CYCLE_ROUTES_reprojected.shp
 
 A nice feature of [Github](http://github.com/) (where our project is hosted) is that [it can display the resulting GeoJSON files](https://github.com/slowe/routerater/blob/master/data/lcc.geojson) without us needing to do anything else.
 
