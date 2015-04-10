@@ -1,0 +1,5 @@
+Moment ID,Latitude,Longitude,Timestamp,Type (e.g. cafe/bad junction),Rating (happy/unhappy),Visible
+1,53.8019,-1.5425,time,cycleway,good,1
+2,53.8019,-1.5525,time,cycleway,good,1
+3,53.8019,-1.5625,time,obstruction,good,1
+4,53.8019,-1.5725,time,obstruction,good,1
