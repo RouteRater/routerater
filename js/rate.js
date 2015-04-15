@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	var pos = {'latitude':53.8019,'longitude':-1.5425,'zoom':13};
+	var pos = {'latitude':53.8019,'longitude':-1.5425,'zoom':17};
 	var map;
 	var layers = { 'base':{}, 'overlay':{} };
 	var control;
@@ -33,8 +33,10 @@ $(document).ready(function(){
 
 	$.ajax({
 		dataType: "jsonp",
-		url: 'http://www.strudel.org.uk/cgi-bin/routerater.pl?latitude='+pos.latitude+'&longitude='+pos.longitude+'&verb=get',
-		success: function(data){ addPoints(data); },
+		url: 'http://www.strudel.org.uk/cgi-bin/routerater.pl?latitude='+pos.latitude+'&longitude='+pos.longitude+'&verb=routes',
+		success: function(data){
+			if(data.routes) addRoutes(data.routes)
+		},
 		error: function(data){ console.log(data); }
 	});
 
@@ -50,5 +52,28 @@ $(document).ready(function(){
 		control = L.control.layers(layers.base,layers.overlay);
 		control.addTo(map);
 		
+	}
+	function onEachRoute(feature, layer) {
+		// does this feature have a property named popupContent?
+		if (feature.properties) {
+			layer.bindPopup(feature.properties.name+': '+feature.properties.grade);
+			console.log(feature,layer)
+		}
+	}
+	function addRoutes(data){
+		//layers.overlay.routes = new L.LayerGroup();
+		console.log(data)
+		L.geoJson(data, {
+			style: function(feature) {
+				switch (feature.properties.grade) {
+					case 0: return {color: "#ffffff"};
+					case 1:   return {color: "#2ba02c"};
+					case 2:   return {color: "#3366dd"};
+					case 3:   return {color: "#f04031"};
+					case 4:   return {color: "#000000"};
+				}
+			},
+			onEachFeature: onEachRoute
+		}).addTo(map);
 	}
 });

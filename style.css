@@ -51,6 +51,7 @@ body.map #content {
 	width: 100%;
 }
 body.map #main { height: 100%; }
+body.rate #main { height: 400px; }
 #navbar { float: right; }
 ul.nav { display: inline-block; }
 ul.nav li { display: inline-block; }
