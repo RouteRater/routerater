@@ -30,7 +30,7 @@ h1,h2,h3,h4 { margin-bottom: 0.666em; }
 h1 { font-size: 1.5em; }
 h2 { font-size: 1.25em; }
 p { margin: 0.5em 0em; line-height: 1.5em; }
-ul { list-style-type: none; }
+ul,ol { list-style-type: none; }
 
 .container {
 	width: 1000px;
@@ -117,6 +117,24 @@ nav.navbar li.active a, ul.nav a:hover, ul.nav a:focus { background-color: #e7e7
 input.fullwidth {
 	width: 100%;
 }
+
+ol.gradeselection {
+	margin: 0px;
+	padding: 0px;
+}
+ol.gradeselection li {
+	display: inline-block;
+	padding: 0.25em;
+}
+ol.gradeselection li.selected { background-color: black; }
+ol.gradeselection li div {
+	width: 2em;
+	height: 2em;
+}
+.green { background-color: #2ba02c; }
+.blue { background-color: #3366dd; }
+.red { background-color: #f04031; }
+.black { background-color: #000000; }
 
 .sr-only {
 	border: 0 none;
