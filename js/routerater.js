@@ -1,8 +1,40 @@
 var rate;
 
+// Get the URL query string and parse it
+$.query = function() {
+	var r = {length:0};
+	var q = location.search;
+	if(q && q != '#'){
+		// remove the leading ? and trailing &
+		q = q.replace(/^\?/,'').replace(/\&$/,'');
+		jQuery.each(q.split('&'), function(){
+			var key = this.split('=')[0];
+			var val = this.split('=')[1];
+			if(/^[0-9\+\-\.Ee]+$/.test(val)) val = parseFloat(val);	// convert floats
+			if(!r[key]) r[key] = val;
+			else{
+				if(typeof r[key]!=="object"){
+					r[key] = [r[key]];
+				}
+				r[key].push(val);
+			}
+		});
+	}
+	return r;
+};
+
+
 function RouteRater(){
 
-	this.moments = [{'lat':53.796405214684256,'lng':-1.5352481603622437,'time':'2015-04-18T21:00:03+01:00'},{'lat':53.796411551738345,'lng':-1.5335100889205933,'time':'2015-04-19T14:03:43+01:00'},{'lat':53.79833797179022,'lng':-1.5296262502670288,'time':'2015-04-19T14:11:05+01:00'}];
+	this.q = $.query();
+	this.moments = [];
+
+	if(this.q.lat && this.q.lng && this.q.lat.length == this.q.lng.length){
+		for(var i = 0; i < this.q.lat.length; i++){
+			this.moments.push({'lat':this.q.lat[i],'lng':this.q.lng[i],'time':(this.q.time[i] ? this.q.time[i]:'')});
+		}
+	}
+	//this.moments = [{'lat':53.796405214684256,'lng':-1.5352481603622437,'time':'2015-04-18T21:00:03+01:00'},{'lat':53.796411551738345,'lng':-1.5335100889205933,'time':'2015-04-19T14:03:43+01:00'},{'lat':53.79833797179022,'lng':-1.5296262502670288,'time':'2015-04-19T14:11:05+01:00'}];
 
 	this.layers = { 'base':{}, 'overlay':{} };
 	this.style = {
@@ -22,8 +54,8 @@ function RouteRater(){
 	this.icons = {};
 	this.routes = [];
 	this.i = -1;
-	this.pos = {'lat':this.moments[0].lat,'lng':this.moments[0].lng,'zoom':17};
-	this.moment = L.latLng(this.moments[0].lat,this.moments[0].lng);
+	this.pos = {'lat':(this.moments.length > 0 ? this.moments[0].lat : 53.796405214684256),'lng':(this.moments.length > 0 ? this.moments[0].lng : -1.5352481603622437),'zoom':17};
+	this.moment;// = L.latLng(this.moments[0].lat,this.moments[0].lng);
 
 	return this;
 }
@@ -48,7 +80,7 @@ RouteRater.prototype.makeMap = function(){
 			errorTileUrl: 'missing.png'
 		});
 		
-		this.map = L.map('main',{'layers':this.layers.base["Route rater"],'center':[this.pos.lat, this.pos.lng],'zoom':this.pos.zoom});
+		this.map = L.map('map',{'layers':this.layers.base["Route rater"],'center':[this.pos.lat, this.pos.lng],'zoom':this.pos.zoom});
 		this.control = L.control.layers(this.layers.base,this.layers.overlay);
 		this.control.addTo(this.map);
 		L.control.scale().addTo(this.map);
@@ -203,29 +235,33 @@ RouteRater.prototype.addRoutes = function(data){
 RouteRater.prototype.setRoad = function(properties){
 	this.road = properties;
 	var grades = ['green','blue','red','black'];
-	var html = '<span>'+properties.name+'</span>'+'<ol class="gradeselection">';
+	var html = '<ol class="gradeselection">';
 	for(var i = 0; i < grades.length ; i++){
 		html += '<li'+(parseInt(properties.grade)-1==i ? ' class="selected"':'')+'><div class="'+grades[i]+'"></div></li>';
 	}
 	html += '</ol>';
+	$('#details .routename').html('&nbsp;/&nbsp;'+properties.name);
 	$('#grade').html(html);
 
 }
 
 RouteRater.prototype.selectNearestRoad = function(loc,px){
 	if(!px) px = 20
+
 	// Find the nearest graded path within px pixels
 	this.nearest = L.GeometryUtil.closestLayerSnap(this.map, this.linesFeatureLayer.getLayers(), loc, px, true);
-	if(this.nearest){
-		// Call the function to select this line
-		this.nearest.layer.selectLine();
-	}
+
+	// Call the function to select this line
+	if(this.nearest) this.nearest.layer.selectLine();
+
 	return this;
 }
 
 RouteRater.prototype.processMoments = function(){
 
 	this.i++;
+	
+	this.typeahead('filter');
 
 	if(this.i < this.moments.length){
 		this.moment = L.latLng(this.moments[this.i].lat,this.moments[this.i].lng);
@@ -240,15 +276,15 @@ RouteRater.prototype.processMoments = function(){
 		var _obj = this;
 		this.markers[this.markers.length-1].on('dragend',function(e){
 			var marker = e.target;
-			console.log(marker.getLatLng())
 			_obj.selectNearestRoad(marker.getLatLng(),20);
 		})
 
 		// Update HTML
 		var pre = "";
 		var d = new Date(this.moments[this.i].time);
-		if(this.moments.length > 0) pre = '<h2>Tap '+(this.i+1)+' of '+(this.moments.length)+'</h2><h3>'+friendlyTime(d)+'</h3>';
-		$('#moment_title').html(pre);
+		if(this.moments.length > 0) pre = '<h2>Tap '+(this.i+1)+' of '+(this.moments.length)+'</h2>';
+		$('#title').html(pre);
+		$('#details').html('<time datetime="'+this.moments[this.i].time+'" class="datestamp">'+friendlyTime(d)+'</time><div class="routename"></div>')
 
 		// Pan the map to this point
 		this.map.panTo(this.moment);
@@ -273,6 +309,148 @@ RouteRater.prototype.processMoments = function(){
 		console.log('done')
 	}
 }
+/*
+function onMapClick(e) {
+    gib_uni();
+    marker = new L.marker(e.latlng, {id:uni, icon:redIcon, draggable:'true'});
+    marker.on('dragend', function(event){
+            var marker = event.target;
+            var position = marker.getLatLng();
+            alert(position);
+            marker.setLatLng([position],{id:uni,draggable:'true'}).bindPopup(position).update();
+    });
+    map.addLayer(marker);
+};*/
+
+
+// Build a typeahead search field attached to the element with ID=id
+RouteRater.prototype.typeahead = function(id){
+	var t = 'typeahead';
+
+	if($('#'+id).length == 0) $('#moment').prepend('<h3><label for="filter" class="sr-only">Category:</label> <input type="text" name="filter" id="filter" class="fullwidth" placeholder="Category e.g. Busy road, good cycle path" /></h3>');
+
+	// Add the typeahead div and hide it
+	$('#moment').append('<div id="'+t+'"></div>');
+
+	// We want to remove the suggestion box if we lose focus on the 
+	// input text field but not if the user is selecting from the list
+	this.typeaheadactive = true;
+	$('#'+t).on('mouseenter',{citation:this},function(e){
+		e.data.citation.typeaheadactive = true;
+	}).on('mouseleave',{citation:this},function(e){
+		e.data.citation.typeaheadactive = false;
+	});
+
+	$('#'+id).on('keyup',{citation:this},function(e){
+
+		// Once a key has been typed in the search field we process it
+		var s = $('#'+t+' a.selected');
+		var list = $('#'+t+' a');
+
+		if(e.keyCode==40 || e.keyCode==38){
+
+			// Up or down cursor keys
+			var i = 0;
+
+			// If an item is selected we move to the next one
+			if(s.length > 0){
+				s.removeClass('selected');
+				i = parseInt(s.attr('data'))+(e.keyCode==40 ? 1 : -1);
+				if(i >= list.length) i = 0;
+				if(i < 0) i = list.length-1;
+			}
+
+			// Select the new item
+			$(list[i]).addClass('selected');
+
+			// Update the search text
+			$(this).val(e.data.citation.results[i].name)
+
+		}else if(e.keyCode==13){
+
+			// The user has pressed return
+			if(s.length > 0) $(list[parseInt(s.attr('data'))]).trigger('click');
+			else $(list[0]).trigger('click');
+
+		}else{
+
+			var html = e.data.citation.search($(this).val());
+
+			$('#'+t).html(html);//.css({'width':$(this).outerWidth()+'px'});
+			$('#'+t+' a:first').addClass('selected');
+			$('#'+t+' a').each(function(i){
+				$(this).on('click',{citation:e.data.citation,s:s,t:t,id:id},function(e){
+					e.preventDefault();
+					// Trigger the click event for the item
+					$('#'+e.data.citation.results[i].id).trigger('click');
+					// Remove the suggestion list
+					$('#'+e.data.t).html('');
+					// Clear the search field
+					$('#'+e.data.id).val('');
+				});
+			
+			});
+		}
+	});
+}
+
+// Get an HTML list of items which match str
+RouteRater.prototype.search = function(str){
+	var results = [];
+	var html = "";
+	// Return a score for how well a pattern matches a string
+	function getScore(str,pattern){
+		if(pattern=="") return 0;
+
+		var words = pattern.split(/[\W]/);
+		var scores = [];
+		for(var w = 0; w < words.length; w++){
+			var score = 0;
+			var i = str.toLowerCase().indexOf(words[w].toLowerCase());
+			if(i >= 0){
+				score += 1/(i+1);//(str.length - i)/str.length;
+				if(i == 0) score += 1.5;
+				else{
+					if(str.substr(i-1,1).match(/[^A-Za-z]/)) score += 1;
+				}
+				// If this matches a word exactly we increase the weight
+				if(str.substr(i-1,1).match(/[^A-Za-z]/) && str.substr(i+words[w].length,1).match(/[^A-Za-z]/)) score += 1;
+			}
+			scores.push(score);
+		}
+		var n = 0;
+		var t = 0;
+		for(var s = 0; s < scores.length; s++){
+			if(scores[s] > 0) n++;
+			t += scores[s];
+		}
+		if(n==scores.length) return t/n;
+		else return 0;
+	}
+	if(str){
+		for(var mom in this.data.moments){
+			var score = getScore(this.data.moments[mom].title,str);
+			score += getScore(this.data.moments[mom].desc,str)/4;	// Also search the description but give it lower weight
+			if(this.data.moments[mom].keywords){
+				for(var k = 0; k < this.data.moments[mom].keywords.length; k++){
+					score += getScore(this.data.moments[mom].keywords[k],str);
+				}
+			}
+			results.push([this.data.moments[mom],score])
+		}
+		// Get order
+		var results = results.sort(function(a, b) {return b[1] - a[1]});
+
+		html = '<ul>';
+		n = Math.min(10,results.length)
+		for(var i = 0; i < n; i++){
+			if(results[i][1] > 0 && results[i][1] > results[0][1]/10) html += '<li><a href="" data="'+i+'"><span class="score">'+Math.round(100*results[i][1]/results[0][1])+'% match</span><span class="title">'+results[i][0].title+'</span><span class="desc">'+results[i][0].desc+'</span></a></li>';
+		}
+		html += "</ul>";
+	}
+	this.results = results;
+	return html;
+}
 
 RouteRater.prototype.init = function(){
 
@@ -281,6 +459,15 @@ RouteRater.prototype.init = function(){
 
 	// Init with roads for current location
 	this.getRoads(function(){ this.processMoments(); });
+	
+	// Load the available moments
+	$.ajax({
+		dataType: "json",
+		url: 'config/config.json',
+		context: this,
+		success: function(data){ this.data = data; }
+	});
+
 	return this;
 }
 
@@ -298,11 +485,11 @@ function friendlyTime(d){
 	m = d.getMinutes();
 	if(m < 10) m = "0"+m;
 
-	if(d-midnight >= 0) return "Today at "+h+":"+m;
+	if(d-midnight >= 0) return "today at "+h+":"+m;
 	else{
 
 		if(d-midnight > -86400000){
-			return "Yesterday at "+h+":"+m;
+			return "yesterday at "+h+":"+m;
 		}else{
 			var mons = new Array('January','February','March','April','May','June','July','August','September','October','November','December');
 			if(typeof d.getYear!=="function") return "";

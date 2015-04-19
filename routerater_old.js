@@ -142,6 +142,6 @@ RouteRater.prototype.search = function(str){
 
 $(document).ready(function(){
 	// Load JSON database of acknowledgments
-	$.getJSON("config/config.json", init);
+	$.getJSON("rate/config/config.json", init);
 })
 

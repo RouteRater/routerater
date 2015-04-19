@@ -51,7 +51,9 @@ body.map #content {
 	width: 100%;
 }
 body.map #main { height: 100%; }
-body.rate #main { height: 400px; }
+body.rate #main { display: table; width: 100%; }
+body.rate #map { height: 400px; display: table-cell; width: 600px; }
+body.rate #rate { display: table-cell; padding-left: 2em; }
 #navbar { float: right; }
 ul.nav { display: inline-block; }
 ul.nav li { display: inline-block; }
@@ -84,6 +86,8 @@ nav.navbar li.active a, ul.nav a:hover, ul.nav a:focus { background-color: #e7e7
 	font-size: 1em;
 }
 #typeahead {
+	max-height: 200px;
+	overflow-y: auto;
 }
 #typeahead ul {
 	margin: 0px;
@@ -120,6 +124,8 @@ input.fullwidth {
 	width: 100%;
 }
 
+div.route { line-height: 2em; float: left; }
+.routename, time { display: inline-block; line-height: 2em; }
 ol.gradeselection {
 	display: inline-block;
 	margin: 0px;
@@ -128,6 +134,7 @@ ol.gradeselection {
 ol.gradeselection li {
 	display: inline-block;
 	padding: 0.25em;
+	margin-top: -0.25em;
 }
 ol.gradeselection li.selected { background-color: black; }
 ol.gradeselection li div {
@@ -150,6 +157,9 @@ ol.gradeselection li div {
 	width: 1px;
 }
 
-@media only screen and (max-width: 640px){
+@media only screen and (max-width: 1000px){
 
+	body.rate #main,body.rate #map,body.rate #rate { display: block; }
+	body.rate #rate { padding-left: 0px; padding-top: 1em; }
+	body.rate #map { width: auto; }
 }
