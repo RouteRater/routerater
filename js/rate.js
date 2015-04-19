@@ -125,41 +125,49 @@ RouteRater.prototype.addRoutes = function(data){
 		
 					var style = _obj.style["default"];
 					var prevlayer;
+
+					layer.deselectLine = function(){
+						this.setStyle(_obj.style["default"])
+						if(_obj.selectedLayer==layer) _obj.selectedLayer = null;
+					}
 					
-					// Create a special function to select/deselect this road
 					layer.selectLine = function(){
-		
-						prevlayer = _obj.selectedLayer;
-						
-						// Remove existing HTML
-						$('#below').html('')
-		
-						if(!_obj.selectedLayer || _obj.selectedLayer!=layer){
-		
+						console.log('selectLine',layer==_obj.selectedLayer)
+
+						if(!_obj.selectedLayer || layer!=_obj.selectedLayer){
+
+							if(_obj.selectedLayer) _obj.selectedLayer.setStyle(_obj.style["default"]);
+
 							style = _obj.style["highlight"];
-							layer.setStyle(style)
+							// Change the style to the highlighted version
+							layer.setStyle(style);
+			
+							// Loop over the layers and de-highlight the ones which
+							// aren't the current layer or the selected layer
+							var f = _obj.linesFeatureLayer.getLayers();
+							for(var i = 0; i < f.length; i++){
+								if(f[i]!=layer && f[i]!=_obj.selectedLayer) f[i].deselectLine();
+							}
+							_obj.selectedLayer = layer;
 							
 							// Set the road
 							_obj.setRoad(properties)
+						}
+					}
 
-							// Update selected layer variable
-							_obj.selectedLayer = layer;
-						}else{
-							style = _obj.style["default"]
-							layer.setStyle(style);
-							_obj.selectedLayer = null;
-						}
+					// Create a special function to select/deselect this road
+					layer.toggleLine = function(){
 		
-						if(prevlayer && prevlayer!=_obj.selectedLayer){
-							// De-highlight the previous layer
-							prevlayer.setStyle(_obj.style["default"]);
-						}
+						console.log('toggleLine')
+						
+						if(!_obj.selectedLayer || _obj.selectedLayer!=layer) layer.selectLine();
+						else layer.deselectLine();
 		
 						return this;
 					}
 		
 					// Create a mouseover event
-					layer.on("mouseover", function (e) {
+					layer.on("mouseover", function(e){
 						// Change the style to the highlighted version
 						layer.setStyle(_obj.style["highlight"]);
 		
@@ -168,11 +176,11 @@ RouteRater.prototype.addRoutes = function(data){
 						// aren't the current layer or the selected layer
 						var f = _obj.linesFeatureLayer.getLayers();
 						for(var i = 0; i < f.length; i++){
-							if(f[i]!=layer && f[i]!=_obj.selectedLayer) f[i].setStyle(_obj.style["default"])
+							if(f[i]!=layer && f[i]!=_obj.selectedLayer) f[i].deselectLine()
 						}
 					});
 		
-					layer.on("click",function(e){ this.selectLine(); });
+					layer.on("click",function(e){ this.toggleLine(); });
 		
 					// Reverting the style back
 					layer.on("mouseout", function(e){ layer.setStyle(style); });
@@ -195,19 +203,19 @@ RouteRater.prototype.addRoutes = function(data){
 RouteRater.prototype.setRoad = function(properties){
 	this.road = properties;
 	var grades = ['green','blue','red','black'];
-	var html = '<h2>'+properties.name+'</h2>'+'<ol class="gradeselection">';
+	var html = '<span>'+properties.name+'</span>'+'<ol class="gradeselection">';
 	for(var i = 0; i < grades.length ; i++){
 		html += '<li'+(parseInt(properties.grade)-1==i ? ' class="selected"':'')+'><div class="'+grades[i]+'"></div></li>';
 	}
 	html += '</ol>';
-	$('#moment_below').html(html);
+	$('#grade').html(html);
 
 }
 
 RouteRater.prototype.selectNearestRoad = function(loc,px){
 	if(!px) px = 20
 	// Find the nearest graded path within px pixels
-	this.nearest = L.GeometryUtil.closestLayerSnap(this.map, this.linesFeatureLayer.getLayers(), this.moment, px, true);
+	this.nearest = L.GeometryUtil.closestLayerSnap(this.map, this.linesFeatureLayer.getLayers(), loc, px, true);
 	if(this.nearest){
 		// Call the function to select this line
 		this.nearest.layer.selectLine();
@@ -228,6 +236,13 @@ RouteRater.prototype.processMoments = function(){
 		// On the initial call we will try to find the nearest road to our point
 		this.markers.push(L.marker(this.moment,{'title':'Moment '+(this.i+1),'draggable':true}));
 		this.markers[this.markers.length-1].addTo(this.map);
+		
+		var _obj = this;
+		this.markers[this.markers.length-1].on('dragend',function(e){
+			var marker = e.target;
+			console.log(marker.getLatLng())
+			_obj.selectNearestRoad(marker.getLatLng(),20);
+		})
 
 		// Update HTML
 		var pre = "";
