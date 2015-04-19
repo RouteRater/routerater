@@ -76,6 +76,8 @@ nav .navbar-header,nav #navbar {
 }
 nav.navbar li.active a, ul.nav a:hover, ul.nav a:focus { background-color: #e7e7e7; }
 
+#logo { display: inline-block; padding: 0; padding-left: 0.25em; height: 1em; }
+#logo div { display: inline-block; width: 0.5em; height: 0.5em; margin-top: 0; margin-right: 0.25em; }
 
 /* Type-ahead styles */
 #filter, #typeahead {
@@ -119,6 +121,7 @@ input.fullwidth {
 }
 
 ol.gradeselection {
+	display: inline-block;
 	margin: 0px;
 	padding: 0px;
 }
@@ -131,9 +134,9 @@ ol.gradeselection li div {
 	width: 2em;
 	height: 2em;
 }
-.green { background-color: #2ba02c; }
-.blue { background-color: #3366dd; }
-.red { background-color: #f04031; }
+.green { background-color: #00c600; }
+.blue { background-color: #3972f8; }
+.red { background-color: #b00000; }
 .black { background-color: #000000; }
 
 .sr-only {
