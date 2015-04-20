@@ -445,9 +445,8 @@ RouteRater.prototype.saveable = function(){
 }
 
 RouteRater.prototype.save = function(){
-	var query = "http://www.strudel.org.uk/cgi-bin/routerater.pl";
+	var url = "http://www.strudel.org.uk/cgi-bin/routerater.pl";
 	var saved = false;
-	var url = 
 	
 	if(this.marker){
 		if(this.road.newgrade){
