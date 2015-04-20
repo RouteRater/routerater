@@ -687,7 +687,7 @@ RouteRater.prototype.init = function(){
 
 			this.typeahead('filter');
 			
-			$('#moment').append('<div id="mood"><h3>2. Your opinion</h3><div class="mood mood_happy" data="happy"><input type="radio" name="mood" value="good" /></div><div class="mood mood_neutral" data="neutral"><input type="radio" name="mood" value="none" /></div><div class="mood mood_sad" data="sad"><input type="radio" name="mood" value="problem" /></div></div>');
+			$('#moment').append('<div id="mood"><h3>2. Rate it</h3><div class="mood mood_happy" data="happy"><input type="radio" name="mood" value="good" /></div><div class="mood mood_neutral" data="neutral"><input type="radio" name="mood" value="none" /></div><div class="mood mood_sad" data="sad"><input type="radio" name="mood" value="problem" /></div></div>');
 
 			this.clear('Trying to find your location...');
 			$('#moment').hide();
