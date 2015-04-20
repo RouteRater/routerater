@@ -368,7 +368,7 @@ RouteRater.prototype.processMoments = function(){
 		// We have no moments
 		var _obj = this;
 		var s = 10000;
-		this.timeout = setTimeout(function(){ console.log('timeout'); _obj.clear('We couldn\'t find your location. Not to worry. Move the map to the location and click on it to add a moment.'); this.i = -1; },s);
+		this.timeout = setTimeout(function(){ console.log('timeout'); _obj.clear('We couldn\'t find your location. Not to worry. Move the map to the location you want and click it to add a moment.'); this.i = -1; },s);
 		if(this.trygeolocate){
 			this.i = -1;	// reset counter
 			// Try to use the user's location
@@ -689,7 +689,7 @@ RouteRater.prototype.init = function(){
 			
 			$('#moment').append('<div id="mood"><h3>2. Rate it</h3><div class="mood mood_happy" data="happy"><input type="radio" name="mood" value="good" /></div><div class="mood mood_neutral" data="neutral"><input type="radio" name="mood" value="none" /></div><div class="mood mood_sad" data="sad"><input type="radio" name="mood" value="problem" /></div></div>');
 
-			this.clear('Trying to find your location...');
+			this.clear('Trying to find your location. Hang on a moment...');
 			$('#moment').hide();
 
 			// Once we have the config data we can process any moments
