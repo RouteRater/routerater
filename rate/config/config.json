@@ -6,30 +6,93 @@
 		"black": { "title": "Grade: black (extreme)", "desc": "Multi-lane sections/gyratories/lots of experience and luck", "keywords": ["black","advanced","extreme"], "img": "" }
 	},
 	"moments": {
-		"junction_busy": { "title": "Junction: busy", "desc": "A busy junction", "keywords":["junction","intersection","busy"],"img": "","mood":"sad" },
-		"junction_confusing": { "title": "Junction: confusing", "desc": "A confusing or badly-signed junction", "keywords": ["intersection","complicated","confusing","signage"], "img": "","mood":"sad" },
-		"road_busy": { "title": "Road: busy", "desc": "A busy road with heavy traffic", "img": "","initial": 0.6,"mood":"sad" },
-		"road_fast": { "title": "Road: fast", "desc": "A road with fast traffic", "img": "","mood":"sad" },
-		"road_quiet": { "title": "Road: quiet", "desc": "A quiet road", "img": "","mood":"happy" },
-		"road_uneven": { "title": "Road: uneven", "desc": "A road with an uneven or bumpy surface", "img": "","mood":"sad" },
-		"road_pothole": { "title": "Road: pothole", "desc": "A hole in the road", "img": "","initial":0.5,"mood":"sad" },
-		"lighting_good": { "title": "Lighting: good", "desc": "Well lit at night", "img": "","mood":"happy" },
-		"lighting_poor": { "title": "Lighting: poor", "desc": "Badly lit at night", "img": "","mood":"sad" },
-		"intimidating": { "title": "Intimidating", "desc": "Uncomfortable location", "img": "","mood":"sad" },
-		"signage_good": { "title": "Signage: good", "desc": "Good or clear signage", "keywords": ["sign"], "img": "","mood":"happy" },
-		"signage_poor": { "title": "Signage: poor", "desc": "Bad or unclear signage", "keywords": ["sign"], "img": "","mood":"sad" },
-		"cpath_good": { "title": "Cycle-path: good", "desc": "A good section of cycle path", "img": "", "initial": 0.7, "mood":"happy" },
-		"cpath_obstruct_perm": { "title": "Cycle-path: obstructed by street furniture", "desc": "Street furniture in bike lane e.g. a bollard or sign-post", "keywords": ["sign-post","lamp-post","bollard","post","fence","street light"], "img": "","mood":"sad" },
-		"cpath_obstruct_temp": { "title": "Cycle-path: obstructed by vehicle", "desc": "A temporary obstruction in a bike lane", "img": "","mood":"sad" },
-		"cpath_confusing": { "title": "Cycle-path: confusing", "desc": "A particularly complicated section of cycle path", "keywords": ["complicated","confusing"], "img": "","mood":"sad" },
-		"cfriend_cafe": { "title": "Cycle-friendly: cafe", "desc": "A cafe that welcomes people with bicycles", "img": "", "initial": 0.8, "mood":"happy" },
-		"cfriend_pub": { "title": "Cycle-friendly: pub", "desc": "A pub that welcomes people with bicycles", "img": "","mood":"happy" },
-		"incident_nearmiss_bus": { "title": "Near miss: bus/tram", "desc": "A hairy moment with a bus or tram", "img": "","mood":"sad" },
-		"incident_nearmiss_car": { "title": "Near miss: car/taxi", "desc": "A hairy moment with a car or taxi", "img": "","mood":"sad" },
-		"incident_nearmiss_van": { "title": "Near miss: van/lorry", "desc": "A hairy moment with a van or lorry", "img": "","mood":"sad" },
-		"incident_nearmiss_bike": { "title": "Near miss: bike", "desc": "A hairy moment with another bicycle", "img": "","mood":"sad" },
-		"incident_nearmiss_person": { "title": "Near miss: pedestrian", "desc": "A hairy moment with a pedestrian", "img": "","mood":"sad" },
-		"incident_rta": { "title": "Road accident", "desc": "A road traffic accident", "img": "","mood":"sad" }
+		"cycleparking": {
+			"title": "Cycle parking", 
+			"desc": "Quality of the parking provision"
+		},
+		"obstructions": {
+			"title": "Obstruction",
+			"desc": "A narrow place, difficult for cycles to pass",
+			"keywords": ["sign-post","lamp-post","bollard","post","fence","street light","gate"],
+			"mood":"sad"
+		},
+		"cycleways": {
+			"title": "Cycle-path",
+			"desc": "The quality of a dedicated cycle path",
+			"initial": 0.7
+		},
+		"closure": {
+			"title": "Temporary closure",
+			"desc": "A route temporarily barred to cycle access.", 
+			"mood":"sad"
+		},
+		"bikeshops": {
+			"title": "Bike shop",
+			"desc": "A place to buy or fix bikes",
+			"mood":"happy"
+		},
+		"potholes": {
+			"title": "Pothole",
+			"desc": "A hole in the road",
+			"initial":0.5,
+			"mood":"sad"
+		},
+		"signs": {
+			"title": "General signage", 
+			"desc": "How clear or unclear the general signage is",
+			"keywords": ["sign","directions"]
+		},
+		"routesigns": {
+			"title": "Bike route sign", 
+			"desc": "A sign indicating cycle routes",
+			"keywords": ["sign","directions"]
+		},
+		"congestion": {
+			"title": "Congestion",
+			"desc": "A place where cyclists will be delayed or need to take extra care",
+			"initial": 0.6,
+			"mood":"sad"
+		},
+		"destinations": {
+			"title": "Destination",
+			"desc": "A place where cyclists may want to visit",
+			"mood":"sad"
+		},
+		"steps": {
+			"title": "Steps", 
+			"desc": "A place where you will have to carry your bike"
+		},
+		"unevenroad": {
+			"title": "Road: uneven",
+			"desc": "A road with an uneven or bumpy surface",
+			"mood":"sad"
+		},
+		"cafe": {
+			"title": "Cycle-friendly cafe",
+			"desc": "A cafe that welcomes people with bicycles",
+			"initial": 0.8,
+			"mood":"happy"
+		},
+		"junction": {
+			"title": "Junction",
+			"desc": "A junction where you need to take care",
+			"keywords":["junction","intersection","busy"],
+			"mood":"sad"
+		},
+		"lighting": {
+			"title": "Lighting", 
+			"desc": "Quality of the street lighting"
+		},
+		"pub": {
+			"title": "Cycle-friendly pub",
+			"desc": "A pub that welcomes people with bicycles",
+			"mood":"happy"
+		},
+		"incident": {
+			"title": "Near miss or accident", 
+			"desc": "A hairy moment with another vehicle or pedestrian", 
+			"mood":"sad"
+		}
 	},
 	"tree": {
 		"text": "Rate a moment",
