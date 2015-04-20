@@ -30,11 +30,8 @@ function RouteRater(){
 	this.moments = [];
 
 	if(this.q.lat && this.q.lng && this.q.lat.length == this.q.lng.length){
-		for(var i = 0; i < this.q.lat.length; i++){
-			this.moments.push({'lat':this.q.lat[i],'lng':this.q.lng[i],'time':(this.q.time[i] ? this.q.time[i]:'')});
-		}
+		for(var i = 0; i < this.q.lat.length; i++) this.addMoment(this.q.lat[i],this.q.lng[i],this.q.time[i]);
 	}
-	//this.moments = [{'lat':53.796405214684256,'lng':-1.5352481603622437,'time':'2015-04-18T21:00:03+01:00'},{'lat':53.796411551738345,'lng':-1.5335100889205933,'time':'2015-04-19T14:03:43+01:00'},{'lat':53.79833797179022,'lng':-1.5296262502670288,'time':'2015-04-19T14:11:05+01:00'}];
 
 	this.layers = { 'base':{}, 'overlay':{} };
 	this.style = {
@@ -46,17 +43,22 @@ function RouteRater(){
 		"default": { weight: 8, opacity: 0.1 },
 		"highlight": { weight: 8, opacity: 1 }
 	}
+	this.grades = ['green','blue','red','black'];
 	this.map;
 	this.control;
 	this.selectedLayer;
 	this.linesFeatureLayer;
+	this.userselections = [];
 	this.markers = [];
 	this.icons = {};
 	this.routes = [];
+	this.trygeolocate = true;
+	this.clickable = false;
 	this.i = -1;
 	this.pos = {'lat':(this.moments.length > 0 ? this.moments[0].lat : 53.796405214684256),'lng':(this.moments.length > 0 ? this.moments[0].lng : -1.5352481603622437),'zoom':17};
-	this.moment;// = L.latLng(this.moments[0].lat,this.moments[0].lng);
-
+	this.moment;
+	this.marker;
+	
 	return this;
 }
 
@@ -90,11 +92,60 @@ RouteRater.prototype.makeMap = function(){
 
 	var _obj = this;
 	this.map.on('moveend',function(e){
-		console.log('end move',_obj.map.getBounds())
+		console.log('end move',_obj.map.getBounds(),_obj.clickable)
 		_obj.getRoads();
 	}).on('click',function(e){
-		console.log('click',e,e.latlng,_obj.linesFeatureLayer);
-	})
+		if(_obj.clickable){
+			console.log('click',e,e.latlng,_obj.linesFeatureLayer);
+			var d = new Date();
+			_obj.addMoment(e.latlng.lat,e.latlng.lng,d.toISOString());
+			_obj.processMoments();
+			_obj.clickable = false;
+		}
+	}).on('locationfound',function(e){
+		var d = new Date();
+		// We've found the location so clear the clickable timeout
+		clearTimeout(this.timeout);
+		_obj.addMoment(e.latlng.lat,e.latlng.lng,d.toISOString());//.moments.push({'lat':this.q.lat[i],'lng':this.q.lng[i],'time':(this.q.time[i] ? this.q.time[i]:'')});
+		_obj.processMoments();
+	}).on('locationerror',function(e){
+		console.log('locationerror')
+		_obj.trygeolocate = false;
+		_obj.clickable = true;
+		_obj.processMoments();
+	});
+	
+	// Build grader
+	var html = '<ol class="gradeselection">';
+	for(var i = 0; i < this.grades.length ; i++) html += '<li><div class="'+this.grades[i]+'"></div></li>';
+	html += '</ol>';
+	html += '<div id="grade_desc"><div class="inner"></div></div>';
+	$('#grade').html(html).hide();
+	$(document).on('click','.gradeselection li div',{me:this},function(e){ e.data.me.setRoad($(this).attr("class")); })
+
+	// Build typeahead events
+	$(document).on('click','.selectedmoment',{me:this},function(e){
+		e.preventDefault();
+		e.stopPropagation();
+		e.data.me.deselectMomentType();
+	});
+
+	// Build mood board events
+	$(document).on('click','.mood',{me:this},function(e){
+		$('.mood.selected').removeClass('selected');
+		e.data.me.mood = $(this).attr('data');
+		e.data.me.saveable();
+		$(this).addClass('selected');
+	});
+	
+	// Add events for save button
+	$(document).on('click','.button.save',{me:this},function(e){ e.data.me.save(); });
+
+	return this;
+}
+
+RouteRater.prototype.addMoment = function(la,ln,ts){
+	this.moments.push({'lat':la,'lng':ln,'time':(ts ? ts:'')});
 	return this;
 }
 
@@ -109,7 +160,7 @@ RouteRater.prototype.getRoads = function(callback){
 			url: 'http://www.strudel.org.uk/cgi-bin/routerater.pl?latmx='+bounds._northEast.lat+'&latmn='+bounds._southWest.lat+'&lonmx='+bounds._northEast.lng+'&lonmn='+bounds._southWest.lng+'&latitude='+_obj.pos.lat+'&longitude='+_obj.pos.lng+'&verb=routes',
 			success: function(data){
 				if(data.routes) _obj.addRoutes(data.routes)
-				if(typeof _obj.movemap==="function") _obj.movemap.call(_obj);
+				//if(typeof _obj.movemap==="function") _obj.movemap.call(_obj);
 				if(typeof callback==="function") callback.call(_obj);
 			},
 			error: function(data){ console.log(data); }
@@ -233,16 +284,47 @@ RouteRater.prototype.addRoutes = function(data){
 }
 
 RouteRater.prototype.setRoad = function(properties){
-	this.road = properties;
-	var grades = ['green','blue','red','black'];
-	var html = '<ol class="gradeselection">';
-	for(var i = 0; i < grades.length ; i++){
-		html += '<li'+(parseInt(properties.grade)-1==i ? ' class="selected"':'')+'><div class="'+grades[i]+'"></div></li>';
-	}
-	html += '</ol>';
-	$('#details .routename').html('&nbsp;/&nbsp;'+properties.name);
-	$('#grade').html(html);
 
+	$('.gradeselection li.selected').removeClass('selected');
+	if(properties){
+		$('#grade').show();
+		if(typeof properties==="string"){
+			var g = 0;
+			if(this.road){
+				for(var i = 0; i < this.grades.length; i++){
+					if(this.grades[i] == properties) g = i;
+				}
+				this.road.newgrade = g+1;
+			}
+		}else{
+			this.road = properties;
+			this.road.grade = parseInt(this.road.grade);
+		}
+		if(this.road.newgrade == this.road.grade) this.road.newgrade = null;
+		g = (this.road.newgrade ? this.road.newgrade : this.road.grade);
+		grade = this.grades[g-1];
+		$('.gradeselection li:eq('+(g-1)+')').addClass('selected');
+		$('#grade_desc').removeClass().addClass(grade);
+		$('#grade_desc .inner').html(this.data.grades[grade].desc);
+		$('#grade').show();
+
+		// Update form
+		if(this.road.newgrade && this.road.newgrade != this.road.grade){
+			console.log(this.road.newgrade,this.road.grade,this.road.osm_id);
+		}
+		$('#details .routename').html(this.road.name ? '&nbsp;/&nbsp;'+this.road.name : '');
+
+	}else{
+		this.road = null;
+		$('#grade').hide();
+		$('#grade_desc').removeClass();
+		$('#grade_desc .inner').html('');
+	}
+
+
+	this.saveable();
+
+	return this;
 }
 
 RouteRater.prototype.selectNearestRoad = function(loc,px){
@@ -257,141 +339,249 @@ RouteRater.prototype.selectNearestRoad = function(loc,px){
 	return this;
 }
 
+RouteRater.prototype.clear = function(txt){
+
+	$('#title').html(txt);
+	$('#details').html('');
+	$('#moment').hide();
+	this.clickable = true;
+
+	return this;
+}
+
 RouteRater.prototype.processMoments = function(){
 
 	this.i++;
 	
-	this.typeahead('filter');
+	console.log('processMoments')
+	// Reset
+	this.deselectMomentType();
+	this.setRoad();
+	this.mood = null;
 
-	if(this.i < this.moments.length){
-		this.moment = L.latLng(this.moments[this.i].lat,this.moments[this.i].lng);
-		
-		// Remove previous marker
-		if(this.markers.length > 0) this.map.removeLayer(this.markers[this.markers.length-1])
-		
-		// On the initial call we will try to find the nearest road to our point
-		this.markers.push(L.marker(this.moment,{'title':'Moment '+(this.i+1),'draggable':true}));
-		this.markers[this.markers.length-1].addTo(this.map);
-		
+	// Remove previous marker
+	if(this.markers.length > 0) this.map.removeLayer(this.markers[this.markers.length-1])
+
+	if(this.moments.length == 0){
+
+		// We have no moments
 		var _obj = this;
-		this.markers[this.markers.length-1].on('dragend',function(e){
-			var marker = e.target;
-			_obj.selectNearestRoad(marker.getLatLng(),20);
-		})
-
-		// Update HTML
-		var pre = "";
-		var d = new Date(this.moments[this.i].time);
-		if(this.moments.length > 0) pre = '<h2>Tap '+(this.i+1)+' of '+(this.moments.length)+'</h2>';
-		$('#title').html(pre);
-		$('#details').html('<time datetime="'+this.moments[this.i].time+'" class="datestamp">'+friendlyTime(d)+'</time><div class="routename"></div>')
-
-		// Pan the map to this point
-		this.map.panTo(this.moment);
-
-		// Make a callback function for once we have roads
-		this.movemap = function(){
-			// Do we have the line layer?
-			if(this.linesFeatureLayer){
-				// Find the nearest graded path within 20 pixels
-				this.selectNearestRoad(this.moment,20);
-			}
-			this.movemap = null;
+		this.timeout = setTimeout(function(){ _obj.clear('Couldn\'t find your location. Click on the map to add a moment'); this.i = -1; },5000);
+		if(this.trygeolocate){
+			this.i = -1;	// reset counter
+			// Try to use the user's location
+			this.map.locate({setView: true,timeout:5000});
 		}
-
-		// If this is the first moment we already have roads
-		// so we can execute the callback immediately
-		if(this.i == 0){
-			this.movemap.call(this);
-		}
+		console.log(this.trygeolocate,this.clickable)
 
 	}else{
-		console.log('done')
+
+		if(this.i < this.moments.length){
+			this.marker = L.latLng(this.moments[this.i].lat,this.moments[this.i].lng);
+			
+			// On the initial call we will try to find the nearest road to our point
+			this.markers.push(L.marker(this.marker,{'title':'Moment '+(this.i+1),'draggable':true}));
+			this.markers[this.markers.length-1].addTo(this.map);
+			
+			var _obj = this;
+			this.markers[this.markers.length-1].on('dragend',function(e){
+				var marker = e.target;
+				_obj.selectNearestRoad(marker.getLatLng(),20);
+			})
+	
+			// Update HTML
+			var pre = "";
+			var d = new Date(this.moments[this.i].time);
+			this.timestamp = this.moments[this.i].time;
+			if(this.moments.length > 0) pre = '<h2>Tap '+(this.i+1)+' of '+(this.moments.length)+'</h2>';
+			$('#title').html(pre);
+			$('#details').html('<time datetime="'+this.moments[this.i].time+'" class="datestamp">'+friendlyTime(d)+'</time><div class="routename"></div>')
+	
+			// Pan the map to this point
+			this.map.panTo(this.marker);
+	
+			$('#moment').show();
+
+			// Init with roads for this location
+			this.getRoads(function(){
+				// Once we've loaded the roads we'll select the nearest one
+				// Do we have the line layer?
+				if(this.linesFeatureLayer){
+					// Find the nearest graded path within 20 pixels
+					this.selectNearestRoad(this.marker,20);
+				}
+				
+			});
+	
+		}else{
+			console.log('done')
+			this.i = -1;
+			this.moments = [];
+			this.clear();
+		}		
 	}
 }
-/*
-function onMapClick(e) {
-    gib_uni();
-    marker = new L.marker(e.latlng, {id:uni, icon:redIcon, draggable:'true'});
-    marker.on('dragend', function(event){
-            var marker = event.target;
-            var position = marker.getLatLng();
-            alert(position);
-            marker.setLatLng([position],{id:uni,draggable:'true'}).bindPopup(position).update();
-    });
-    map.addLayer(marker);
-};*/
 
+RouteRater.prototype.saveable = function(){
+	var saveable = false;
+	if(this.marker){
+		if(this.road && this.road.newgrade) saveable = true;
+		if(this.mood && this.moment) saveable = true;
+	}
+
+	if(saveable){
+		$('#nav').html('<button class="button save">Save</button>')
+		console.log('Can save')
+	}else{
+		$('#nav').html('')
+		console.log('No save')
+	}
+	return this;
+}
+
+RouteRater.prototype.save = function(){
+	var query = "";
+	var saved = false;
+	
+	if(this.marker){
+		if(this.road.newgrade){
+			query = (query ? '&':'')+'osm_id='+this.road.osm_id+'&grade='+this.road.newgrade+'&timestamp='+this.timestamp;
+			console.log(query);
+			saved = true;
+		}
+		if(this.mood && this.moment){
+			query = 'lat='+this.marker.lat+'&lng='+this.marker.lng+'mood='+this.mood+'&type='+this.moment+'&timestamp='+this.timestamp;
+			console.log(query);
+			saved = true;
+		}
+	}
+
+	if(saved){
+		this.processMoments();
+	}
+	return this;
+}
+
+RouteRater.prototype.deselectMomentType = function(){
+
+	// Update the search text
+	$('#filter').val('').show();
+
+	// Filter list to this item
+	$('#typeahead').html(this.search('')).show();
+	
+	$('.mood_neutral').trigger('click');
+	
+	$('.selectedmoment').html('');
+	
+	this.moment = null;
+	
+	this.saveable();
+
+}
+
+RouteRater.prototype.selectMomentType = function(id,i){
+
+	// Store this selection to improve the typeahead results
+	this.userselections.push(id);
+
+	this.moment = id;
+	
+	// Trigger default mood for this type of moment
+	if(this.results[i][0].mood) $('.mood_'+this.results[i][0].mood+' input').trigger('click');
+
+	if($('.selectedmoment').length==0) $('#typeahead').after('<div class="selectedmoment"></div>')
+	$('.selectedmoment').html('<a href="#"><span href="#" class="change">&#10799;</span><span class="title">'+this.results[i][0].title+'</span><span class="desc">'+this.results[i][0].desc+'</span></a></div>');
+
+	// Update the search text
+	$('#filter').val(this.results[i][0].title).hide();
+	
+	// Filter list to this item
+	$('#typeahead').html(this.search(this.results[i][0].title)).hide();
+	
+	$('#typeahead .momentlist li:first-child').addClass('selected');
+	
+	this.saveable();
+
+	return this;
+}
 
 // Build a typeahead search field attached to the element with ID=id
 RouteRater.prototype.typeahead = function(id){
+	if(!id) id = 'filter';
 	var t = 'typeahead';
 
-	if($('#'+id).length == 0) $('#moment').prepend('<h3><label for="filter" class="sr-only">Category:</label> <input type="text" name="filter" id="filter" class="fullwidth" placeholder="Category e.g. Busy road, good cycle path" /></h3>');
+	if(!this.typeaheadsetup){
+	
+		this.typeaheadsetup = true;
+	
+		if($('#'+id).length == 0) $('#moment').prepend('<div class=""><label for="filter" class="sr-only">Category:</label> <input type="text" name="filter" id="filter" class="fullwidth" placeholder="Category e.g. Busy road, good cycle path" /></div>');
+	
+		// Add the typeahead div and hide it
+		$('#moment').append('<div id="'+t+'"></div>');
+	
+		// We want to remove the suggestion box if we lose focus on the 
+		// input text field but not if the user is selecting from the list
+		this.typeaheadactive = true;
+		$('#'+t).on('mouseenter',{citation:this},function(e){
+			e.data.citation.typeaheadactive = true;
+		}).on('mouseleave',{citation:this},function(e){
+			e.data.citation.typeaheadactive = false;
+		});
 
-	// Add the typeahead div and hide it
-	$('#moment').append('<div id="'+t+'"></div>');
-
-	// We want to remove the suggestion box if we lose focus on the 
-	// input text field but not if the user is selecting from the list
-	this.typeaheadactive = true;
-	$('#'+t).on('mouseenter',{citation:this},function(e){
-		e.data.citation.typeaheadactive = true;
-	}).on('mouseleave',{citation:this},function(e){
-		e.data.citation.typeaheadactive = false;
-	});
-
-	$('#'+id).on('keyup',{citation:this},function(e){
-
-		// Once a key has been typed in the search field we process it
-		var s = $('#'+t+' a.selected');
-		var list = $('#'+t+' a');
-
-		if(e.keyCode==40 || e.keyCode==38){
-
-			// Up or down cursor keys
+		// Deal with the click event
+		$(document).on('click','#'+t+' a',{me:this},function(e){
+			e.preventDefault();
+			e.stopPropagation();
+			// Trigger the click event for the item
+			var s = $(this);
+			if(s.length == 1 && s.attr('data')) e.data.me.selectMomentType(e.data.me.results[parseInt(s.attr('data'))][2],parseInt(s.attr('data')));
+		});
+	
+		$('#'+id).on('keyup',{citation:this},function(e){
+	
+			// Once a key has been typed in the search field we process it
+			var s = $('#'+t+' a.selecter.selected');
+			var list = $('#'+t+' a.selecter');
 			var i = 0;
-
-			// If an item is selected we move to the next one
-			if(s.length > 0){
-				s.removeClass('selected');
-				i = parseInt(s.attr('data'))+(e.keyCode==40 ? 1 : -1);
-				if(i >= list.length) i = 0;
-				if(i < 0) i = list.length-1;
+	
+			if(e.keyCode==40 || e.keyCode==38){
+	
+				// Up or down cursor keys
+				i = 0;
+	
+				// If an item is selected we move to the next one
+				if(s.length > 0){
+					s.removeClass('selected');
+					i = parseInt(s.attr('data'))+(e.keyCode==40 ? 1 : -1);
+					if(i >= list.length) i = 0;
+					if(i < 0) i = list.length-1;
+				}
+	
+				// Select the new item
+				$(list[i]).addClass('selected');
+	
+				
+			}else if(e.keyCode==13){
+	
+				// The user has pressed return
+				if(s.length > 0) i = parseInt(s.attr('data'));
+				$(list[i]).trigger('click');
+	
+			}else{
+	
+				var html = e.data.citation.search($(this).val());
+				
+				$('#'+t).html(html);
+				$('#'+t+' a.selecter:first').addClass('selected');
 			}
+			var container = document.getElementById(t);
+			container.scrollTop = $(list[i]).outerHeight()*i;
+		});
+		$('#'+t).html(this.search(''));	// Default list
+	}
 
-			// Select the new item
-			$(list[i]).addClass('selected');
-
-			// Update the search text
-			$(this).val(e.data.citation.results[i].name)
-
-		}else if(e.keyCode==13){
-
-			// The user has pressed return
-			if(s.length > 0) $(list[parseInt(s.attr('data'))]).trigger('click');
-			else $(list[0]).trigger('click');
-
-		}else{
-
-			var html = e.data.citation.search($(this).val());
-
-			$('#'+t).html(html);//.css({'width':$(this).outerWidth()+'px'});
-			$('#'+t+' a:first').addClass('selected');
-			$('#'+t+' a').each(function(i){
-				$(this).on('click',{citation:e.data.citation,s:s,t:t,id:id},function(e){
-					e.preventDefault();
-					// Trigger the click event for the item
-					$('#'+e.data.citation.results[i].id).trigger('click');
-					// Remove the suggestion list
-					$('#'+e.data.t).html('');
-					// Clear the search field
-					$('#'+e.data.id).val('');
-				});
-			
-			});
-		}
-	});
+	return this;
 }
 
 // Get an HTML list of items which match str
@@ -436,18 +626,34 @@ RouteRater.prototype.search = function(str){
 					score += getScore(this.data.moments[mom].keywords[k],str);
 				}
 			}
-			results.push([this.data.moments[mom],score])
+			results.push([this.data.moments[mom],score,mom]);
 		}
+	}else{
+		// Work out the score for each item
+		var score = {};
+		// Set an initial score
+		for(var mom in this.data.moments) score[mom] = (this.data.moments[mom].initial ? this.data.moments[mom].initial : 0.1);
+		for(var i = 0; i < this.userselections.length; i++){
+			// Increase the score by how recently the user selected it
+			score[this.userselections[i]] += (i+1)/(this.userselections.length);
+		}
+		// Add to the results list
+		for(var mom in this.data.moments) results.push([this.data.moments[mom],score[mom],mom]);
+	}
+
+	if(results.length > 0){
 		// Get order
 		var results = results.sort(function(a, b) {return b[1] - a[1]});
-
-		html = '<ul>';
-		n = Math.min(10,results.length)
+		html = '<ol class="momentlist">';
+		//n = Math.min(10,results.length)
+		n = results.length;
 		for(var i = 0; i < n; i++){
-			if(results[i][1] > 0 && results[i][1] > results[0][1]/10) html += '<li><a href="" data="'+i+'"><span class="score">'+Math.round(100*results[i][1]/results[0][1])+'% match</span><span class="title">'+results[i][0].title+'</span><span class="desc">'+results[i][0].desc+'</span></a></li>';
+			//if(results[i][1] > 0 && results[i][1] >= results[0][1]/10) html += '<li><a href="#" data="'+i+'"><span class="score">'+Math.round(100*results[i][1]/results[0][1])+'% match</span><span class="title">'+results[i][0].title+'</span><span class="desc">'+results[i][0].desc+'</span></a></li>';
+			if(results[i][1] > 0) html += '<li><a href="#" class="selecter" data="'+i+'"><span class="score">'+Math.round(100*results[i][1]/results[0][1])+'% match</span><span class="title">'+results[i][0].title+'</span><span class="desc">'+results[i][0].desc+'</span></a></li>';
 		}
-		html += "</ul>";
+		html += "</ol>";
 	}
+
 	this.results = results;
 	return html;
 }
@@ -456,17 +662,27 @@ RouteRater.prototype.init = function(){
 
 	// Make the map
 	this.makeMap();
-
-	// Init with roads for current location
-	this.getRoads(function(){ this.processMoments(); });
 	
 	// Load the available moments
 	$.ajax({
 		dataType: "json",
 		url: 'config/config.json',
 		context: this,
-		success: function(data){ this.data = data; }
+		success: function(data){
+			this.data = data;
+
+			this.typeahead('filter');
+			
+			$('#moment').append('<div id="mood"><div class="mood mood_happy" data="happy"><input type="radio" name="mood" value="good" /></div><div class="mood mood_neutral" data="neutral"><input type="radio" name="mood" value="none" /></div><div class="mood mood_sad" data="sad"><input type="radio" name="mood" value="problem" /></div></div>');
+
+			this.clear('Trying to find your location...');
+			$('#moment').hide();
+
+			// Once we have the config data we can process any moments
+			this.processMoments();
+		}
 	});
+
 
 	return this;
 }
