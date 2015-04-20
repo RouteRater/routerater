@@ -449,9 +449,9 @@ RouteRater.prototype.save = function(){
 	var saved = false;
 	
 	if(this.marker){
-		if(this.road.newgrade){
+		if(this.road && this.road.newgrade){
 			$.ajax({
-				dataType: "json",
+				dataType: "jsonp",
 				url: url+'?verb=add&osm_id='+this.road.osm_id+'&grade='+this.road.newgrade+'&timestamp='+this.timestamp,
 				success: function(data){ }
 			})
@@ -459,7 +459,7 @@ RouteRater.prototype.save = function(){
 		}
 		if(this.mood && this.moment){
 			$.ajax({
-				dataType: "json",
+				dataType: "jsonp",
 				url: url+'?verb=add&latitude='+this.marker.lat+'&longitude='+this.marker.lng+'&rating='+this.mood+'&type='+this.moment+'&timestamp='+this.timestamp,
 				success: function(data){ }
 			})

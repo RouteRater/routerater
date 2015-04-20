@@ -28,8 +28,11 @@ $(document).ready(function(){
 		L.control.scale().addTo(map);
 	}
 	var icons = {};
+	var categories = ['obstructions','cycleways','bikeshops','potholes','signs','congestion','destinations','steps','unevenroad','cafe','junction','lighting','pub','incident']
 
-	icons.basic = L.icon({iconUrl: 'icons/.png',shadowUrl: 'leaf-shadow.png',iconSize:[38, 95],shadowSize:[50, 64],iconAnchor:[22, 94],shadowAnchor: [4, 62],popupAnchor:  [-3, -76]});
+	for(var i = 0; i < categories.length; i++){
+		icons[categories[i]] = L.icon({iconUrl: 'images/icon_'+categories[i]+'.png',shadowUrl: 'images/icon-shadow.png',iconSize:[32, 32],shadowSize:[32, 32],iconAnchor:[16, 16],shadowAnchor: [16, 16],popupAnchor:  [0, -16]});
+	}
 
 	$.ajax({
 		dataType: "jsonp",
@@ -43,7 +46,7 @@ $(document).ready(function(){
 		
 		// add markers with some popup content to it and open the popup
 		for(var i = 0 ; i < data.moments.length ; i++){
-			L.marker([data.moments[i].latitude, data.moments[i].longitude]).bindPopup(data.moments[i].type).addTo(layers.overlay.moments);
+			L.marker([data.moments[i].latitude, data.moments[i].longitude],{icon:icons[data.moments[i].type]}).bindPopup(data.moments[i].type).addTo(layers.overlay.moments);
 		}
 		layers.overlay.moments.addTo(map);
 		control.removeFrom(map);
