@@ -88,7 +88,7 @@ RouteRater.prototype.makeMap = function(){
 		L.control.scale().addTo(this.map);
 	}
 
-	this.icons.basic = L.icon({iconUrl: 'icons/.png',shadowUrl: 'leaf-shadow.png',iconSize:[38, 95],shadowSize:[50, 64],iconAnchor:[22, 94],shadowAnchor: [4, 62],popupAnchor:  [-3, -76]});
+	this.icons.basic = L.icon({iconUrl: 'images/marker-icon.png',shadowUrl: 'images/marker-shadow.png',iconSize:[38, 95],shadowSize:[50, 64],iconAnchor:[22, 94],shadowAnchor: [4, 62],popupAnchor:  [-3, -76]});
 
 	var _obj = this;
 	this.map.on('moveend',function(e){
@@ -378,7 +378,7 @@ RouteRater.prototype.processMoments = function(){
 			// Try to use the user's location
 			this.map.locate({setView: true,timeout:s});
 		}
-		console.log(this.trygeolocate,this.clickable)
+		//console.log(this.trygeolocate,this.clickable)
 
 	}else{
 
@@ -401,7 +401,7 @@ RouteRater.prototype.processMoments = function(){
 			var pre = "";
 			var d = new Date(this.moments[this.i].time);
 			this.timestamp = this.moments[this.i].time;
-			if(this.moments.length > 0) pre = '<h2>Rate moment'+(this.moments.length > 1 ? ' '+(this.i+1)+' of '+(this.moments.length) : '')+'</h2>';
+			if(this.moments.length > 0) pre = '<h2>Rating moment'+(this.moments.length > 1 ? ' '+(this.i+1)+' of '+(this.moments.length) : '')+'</h2>';
 			$('#title').html(pre);
 			$('#details').html('<time datetime="'+this.moments[this.i].time+'" class="datestamp">'+friendlyTime(d)+'</time><div class="routename"></div>')
 	
@@ -418,9 +418,10 @@ RouteRater.prototype.processMoments = function(){
 					// Find the nearest graded path within 20 pixels
 					this.selectNearestRoad(this.marker,20);
 				}
-				
 			});
-	
+
+			$(window).trigger('resize')
+			
 		}else{
 			console.log('done')
 			this.i = -1;
@@ -499,7 +500,7 @@ RouteRater.prototype.selectMomentType = function(id,i){
 	if(this.results[i][0].mood) $('.mood_'+this.results[i][0].mood+' input').trigger('click');
 
 	if($('.selectedmoment').length==0) $('#typeahead').after('<div class="selectedmoment"></div>')
-	$('.selectedmoment').html('<a href="#"><span href="#" class="change">&#10799;</span><span class="title">'+this.results[i][0].title+'</span><span class="desc">'+this.results[i][0].desc+'</span></a></div>');
+	$('.selectedmoment').html('<a href="#"><img src="../images/icon_'+this.results[i][2]+'_selected.png" alt="'+this.results[i][0].title+'" /><span href="#" class="change">&#10799;</span><span class="title">'+this.results[i][0].title+'</span><span class="desc">'+this.results[i][0].desc+'</span></a></div>');
 
 	// Update the search text
 	$('#filter').val(this.results[i][0].title).hide();
@@ -523,7 +524,7 @@ RouteRater.prototype.typeahead = function(id){
 	
 		this.typeaheadsetup = true;
 	
-		if($('#'+id).length == 0) $('#moment').prepend('<div class="filterholder"><label for="filter" class="sr-only">Category:</label> <input type="text" name="filter" id="filter" class="fullwidth" placeholder="Category e.g. Busy road, good cycle path" /></div>');
+		if($('#'+id).length == 0) $('#moment').prepend('<div class="filterholder"><label for="filter" class="">Category:</label> <input type="text" name="filter" id="filter" class="fullwidth" placeholder="Find e.g. cycle-path, steps, obstruction" /></div>');
 	
 		// Add the typeahead div and hide it
 		$('#moment').append('<div id="'+t+'"></div>');
@@ -657,7 +658,7 @@ RouteRater.prototype.search = function(str){
 		n = results.length;
 		for(var i = 0; i < n; i++){
 			//if(results[i][1] > 0 && results[i][1] >= results[0][1]/10) html += '<li><a href="#" data="'+i+'"><span class="score">'+Math.round(100*results[i][1]/results[0][1])+'% match</span><span class="title">'+results[i][0].title+'</span><span class="desc">'+results[i][0].desc+'</span></a></li>';
-			if(results[i][1] > 0) html += '<li><a href="#" class="selecter" data="'+i+'"><img src="../images/cleardot.gif" alt="'+results[i][0].title+'" /><span class="score">'+Math.round(100*results[i][1]/results[0][1])+'% match</span><span class="title">'+results[i][0].title+'</span><span class="desc">'+results[i][0].desc+'</span></a></li>';
+			if(results[i][1] > 0) html += '<li><a href="#" class="selecter" data="'+i+'"><img src="../images/icon_'+results[i][2]+'.png" alt="'+results[i][0].title+'" /><span class="score">'+Math.round(100*results[i][1]/results[0][1])+'% match</span><span class="title">'+results[i][0].title+'</span><span class="desc">'+results[i][0].desc+'</span></a></li>';
 		}//<img src="../images/icon_'+results[i][2]+'.png" 
 		html += "</ol>";
 	}

@@ -42,6 +42,15 @@ ul,ol { list-style-type: none; }
 
 /* Navigation styles */
 nav.navbar { background-color: #f8f8f8; border-bottom: 1px solid #e7e7e7; margin-bottom: 2em; }
+#footer {
+	background-color: #f8f8f8; 
+	color: #606060;
+	border-top: 1px solid #e7e7e7;
+	margin-top: 2em;
+	font-size: 0.8em;
+}
+#footer .container { margin: 1em auto; }
+
 body.map nav.navbar { margin-bottom: 0px; }
 body.map #content {
 	bottom: 0px;
@@ -81,6 +90,7 @@ nav.navbar li.active a, ul.nav a:hover, ul.nav a:focus { background-color: #e7e7
 #logo { display: inline-block; padding: 0; padding-left: 0.25em; height: 1em; }
 #logo div { display: inline-block; width: 0.5em; height: 0.5em; margin-top: 0; margin-right: 0.25em; }
 
+#details { color: #606060; font-size: 0.8em; }
 /* Type-ahead styles */
 #filter, #typeahead {
 	font-size: 1em;
@@ -97,7 +107,7 @@ nav.navbar li.active a, ul.nav a:hover, ul.nav a:focus { background-color: #e7e7
 #typeahead li {
 	background-color: white;
 }
-#typeahead li img {
+#typeahead li img,.selectedmoment img {
 	width: 24px;
 	height: 24px;
 	float: left;
@@ -251,7 +261,6 @@ input.button { padding: 6px 8px; /* Bug fix for Firefox over-riding the line-hei
 .button[aria-hidden="true"].keepvisible { display: inline-block; opacity: 0.2; filter: alpha(opacity=20); background-color: #e6e6e6; }
 .button.fancybtn { color: white; border-color: #1b5278; -o-background-size: 100% 100%;-moz-background-size: 100% 100%;-webkit-background-size: 100% 100%;background-size: 100% 100%;/* Internet Explorer */*background: #263c6f;background: #263c6f;filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr=#FF004f00, endColorstr=#FF009d00);/* Recent browsers */background-image: -webkit-gradient(linear,left top, left bottom,from(#1b5278),to(#263c6f));background-image: -webkit-linear-gradient(top,#1b5278,#263c6f);background-image: -moz-linear-gradient(top,#1b5278,#263c6f);background-image: -o-linear-gradient(top,#1b5278,#263c6f);background-image: linear-gradient(top,#1b5278,#263c6f); }
 .button.fancybtn:hover, .button.fancybtn:focus { -o-background-size: 100% 100%;-moz-background-size: 100% 100%;-webkit-background-size: 100% 100%;background-size: 100% 100%;/* Internet Explorer */*background: #263c6f;background: #263c6f;filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr=#FF1b5278, endColorstr=#FF1a294b);/* Recent browsers */background-image: -webkit-gradient(linear,left top, left bottom,from(#1b5278),to(#1a294b));background-image: -webkit-linear-gradient(top,#1b5278,#1a294b);background-image: -moz-linear-gradient(top,#1b5278,#1a294b);background-image: -o-linear-gradient(top,#1b5278,#1a294b);background-image: linear-gradient(top,#1b5278,#1a294b); }
-
 
 
 .sr-only {
