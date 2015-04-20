@@ -78,7 +78,6 @@ RouteRater.prototype.makeMap = function(){
 				'Imagery &copy; <a href="http://mapbox.com">Mapbox</a>',
 			id: 'examples.map-20v6611k',
 			maxZoom: 17,
-			minZoom: 16,
 			errorTileUrl: 'missing.png'
 		});
 		
@@ -95,6 +94,7 @@ RouteRater.prototype.makeMap = function(){
 		console.log('end move',_obj.map.getBounds(),_obj.clickable)
 		_obj.getRoads();
 	}).on('click',function(e){
+		console.log(e.latlng)
 		if(_obj.clickable){
 			console.log('click',e,e.latlng,_obj.linesFeatureLayer);
 			var d = new Date();
