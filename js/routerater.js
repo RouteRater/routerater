@@ -23,7 +23,6 @@ $.query = function() {
 	return r;
 };
 
-
 function RouteRater(){
 
 	this.q = $.query();
@@ -78,7 +77,6 @@ RouteRater.prototype.makeMap = function(){
 				'Imagery &copy; <a href="http://mapbox.com">Mapbox</a>',
 			id: 'examples.map-20v6611k',
 			maxZoom: 17,
-			minZoom: 16,
 			errorTileUrl: 'missing.png'
 		});
 		
@@ -95,6 +93,7 @@ RouteRater.prototype.makeMap = function(){
 		console.log('end move',_obj.map.getBounds(),_obj.clickable)
 		_obj.getRoads();
 	}).on('click',function(e){
+		console.log(e.latlng)
 		if(_obj.clickable){
 			console.log('click',e,e.latlng,_obj.linesFeatureLayer);
 			var d = new Date();
@@ -116,16 +115,13 @@ RouteRater.prototype.makeMap = function(){
 	});
 	
 	// Build grader
-	var html = '<ol class="gradeselection">';
+	var html = '<h3>3. Confirm route grade</h3><ol class="gradeselection">';
 	for(var i = 0; i < this.grades.length ; i++) html += '<li><div class="'+this.grades[i]+'"></div></li>';
 	html += '</ol>';
 	html += '<div id="gradedescriptiontoggle">\?</div>';
 	html += '<div id="gradedescription"></div>';
-	$(document).on('click','#gradedescriptiontoggle',function(e){
-		$('#gradedescription').toggle();
-	});
-
 	$('#grade').html(html).hide();
+	$(document).on('click','#gradedescriptiontoggle',function(e){ $('#gradedescription').toggle(); });
 	$(document).on('click','.gradeselection li div',{me:this},function(e){ e.data.me.setRoad($(this).attr("class")); })
 
 	// Build typeahead events
@@ -372,7 +368,7 @@ RouteRater.prototype.processMoments = function(){
 		// We have no moments
 		var _obj = this;
 		var s = 10000;
-		this.timeout = setTimeout(function(){ console.log('timeout'); _obj.clear('Couldn\'t find your location. Click on the map to add a moment'); this.i = -1; },s);
+		this.timeout = setTimeout(function(){ console.log('timeout'); _obj.clear('We couldn\'t find your location. Not to worry. Move the map to the location and click on it to add a moment.'); this.i = -1; },s);
 		if(this.trygeolocate){
 			this.i = -1;	// reset counter
 			// Try to use the user's location
@@ -478,7 +474,10 @@ RouteRater.prototype.deselectMomentType = function(){
 
 	// Filter list to this item
 	$('#typeahead').html(this.search('')).show();
-	
+	// Set the scroll position back to the top
+	var container = document.getElementById('typeahead');
+	container.scrollTop = 0;
+
 	$('.mood_neutral').trigger('click');
 	
 	$('.selectedmoment').html('');
@@ -524,7 +523,7 @@ RouteRater.prototype.typeahead = function(id){
 	
 		this.typeaheadsetup = true;
 	
-		if($('#'+id).length == 0) $('#moment').prepend('<div class="filterholder"><label for="filter" class="">Category:</label> <input type="text" name="filter" id="filter" class="fullwidth" placeholder="Find e.g. cycle-path, steps, obstruction" /></div>');
+		if($('#'+id).length == 0) $('#moment').prepend('<h3>1. Choose a category</h3><div class="filterholder"><label for="filter" class="sr-only">Category:</label> <input type="text" name="filter" id="filter" class="fullwidth" placeholder="Find e.g. cycle-path, steps, obstruction" /></div>');
 	
 		// Add the typeahead div and hide it
 		$('#moment').append('<div id="'+t+'"></div>');
@@ -688,7 +687,7 @@ RouteRater.prototype.init = function(){
 
 			this.typeahead('filter');
 			
-			$('#moment').append('<div id="mood"><div class="mood mood_happy" data="happy"><input type="radio" name="mood" value="good" /></div><div class="mood mood_neutral" data="neutral"><input type="radio" name="mood" value="none" /></div><div class="mood mood_sad" data="sad"><input type="radio" name="mood" value="problem" /></div></div>');
+			$('#moment').append('<div id="mood"><h3>2. Your opinion</h3><div class="mood mood_happy" data="happy"><input type="radio" name="mood" value="good" /></div><div class="mood mood_neutral" data="neutral"><input type="radio" name="mood" value="none" /></div><div class="mood mood_sad" data="sad"><input type="radio" name="mood" value="problem" /></div></div>');
 
 			this.clear('Trying to find your location...');
 			$('#moment').hide();
