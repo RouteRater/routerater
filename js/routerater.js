@@ -341,6 +341,7 @@ RouteRater.prototype.selectNearestRoad = function(loc,px){
 
 RouteRater.prototype.clear = function(txt){
 
+	if(!txt) txt = 'Click on the map to add a moment.';
 	$('#title').html(txt);
 	$('#details').html('');
 	$('#moment').hide();
@@ -393,7 +394,7 @@ RouteRater.prototype.processMoments = function(){
 			var pre = "";
 			var d = new Date(this.moments[this.i].time);
 			this.timestamp = this.moments[this.i].time;
-			if(this.moments.length > 0) pre = '<h2>Tap '+(this.i+1)+' of '+(this.moments.length)+'</h2>';
+			if(this.moments.length > 0) pre = '<h2>Rate moment'+(this.moments.length > 1 ? ' '+(this.i+1)+' of '+(this.moments.length) : '')+'</h2>';
 			$('#title').html(pre);
 			$('#details').html('<time datetime="'+this.moments[this.i].time+'" class="datestamp">'+friendlyTime(d)+'</time><div class="routename"></div>')
 	
