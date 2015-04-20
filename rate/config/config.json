@@ -9,8 +9,7 @@
 		"obstructions": {
 			"title": "Obstruction",
 			"desc": "A narrow place, difficult for cycles to pass",
-			"keywords": ["sign-post","lamp-post","bollard","post","fence","street light","gate"],
-			"mood":"sad"
+			"keywords": ["sign-post","lamp-post","bollard","post","fence","street light","gate"]
 		},
 		"cycleways": {
 			"title": "Cycle-path",
@@ -19,14 +18,12 @@
 		},
 		"bikeshops": {
 			"title": "Bike shop",
-			"desc": "A place to buy or fix bikes",
-			"mood":"happy"
+			"desc": "A place to buy or fix bikes"
 		},
 		"potholes": {
 			"title": "Pothole",
 			"desc": "A hole in the road",
-			"initial":0.5,
-			"mood":"sad"
+			"initial":0.5
 		},
 		"signs": {
 			"title": "General signage", 
@@ -36,13 +33,11 @@
 		"congestion": {
 			"title": "Congestion",
 			"desc": "A place where cyclists will be delayed or need to take extra care",
-			"initial": 0.6,
-			"mood":"sad"
+			"initial": 0.6
 		},
 		"destinations": {
 			"title": "Destination",
-			"desc": "A place where cyclists may want to visit",
-			"mood":"sad"
+			"desc": "A place where cyclists may want to visit"
 		},
 		"steps": {
 			"title": "Steps", 
@@ -50,20 +45,17 @@
 		},
 		"unevenroad": {
 			"title": "Road: uneven",
-			"desc": "A road with an uneven or bumpy surface",
-			"mood":"sad"
+			"desc": "A road with an uneven or bumpy surface"
 		},
 		"cafe": {
 			"title": "Cycle-friendly cafe",
 			"desc": "A cafe that welcomes people with bicycles",
-			"initial": 0.8,
-			"mood":"happy"
+			"initial": 0.8
 		},
 		"junction": {
 			"title": "Junction",
 			"desc": "A junction where you need to take care",
-			"keywords":["junction","intersection","busy"],
-			"mood":"sad"
+			"keywords":["junction","intersection","busy"]
 		},
 		"lighting": {
 			"title": "Lighting", 
@@ -71,13 +63,11 @@
 		},
 		"pub": {
 			"title": "Cycle-friendly pub",
-			"desc": "A pub that welcomes people with bicycles",
-			"mood":"happy"
+			"desc": "A pub that welcomes people with bicycles"
 		},
 		"incident": {
 			"title": "Near miss or accident", 
-			"desc": "A hairy moment with another vehicle or pedestrian", 
-			"mood":"sad"
+			"desc": "A hairy moment with another vehicle or pedestrian"
 		}
 	},
 	"tree": {

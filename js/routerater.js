@@ -501,7 +501,7 @@ RouteRater.prototype.selectMomentType = function(id,i){
 	this.moment = id;
 	
 	// Trigger default mood for this type of moment
-	if(this.results[i][0].mood) $('.mood_'+this.results[i][0].mood+' input').trigger('click');
+	//if(this.results[i][0].mood) $('.mood_'+this.results[i][0].mood+' input').trigger('click');
 
 	if($('.selectedmoment').length==0) $('#typeahead').after('<div class="selectedmoment"></div>')
 	$('.selectedmoment').html('<a href="#"><img src="../images/icon_'+this.results[i][2]+'_selected.png" alt="'+this.results[i][0].title+'" /><span href="#" class="change">&#10799;</span><span class="title">'+this.results[i][0].title+'</span><span class="desc">'+this.results[i][0].desc+'</span></a></div>');
