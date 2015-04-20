@@ -23,7 +23,6 @@ $.query = function() {
 	return r;
 };
 
-
 function RouteRater(){
 
 	this.q = $.query();

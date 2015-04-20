@@ -6,10 +6,6 @@
 		"black": { "title": "Grade: black (extreme)", "desc": "Multi-lane sections/gyratories/lots of experience and luck", "keywords": ["black","advanced","extreme"], "img": "" }
 	},
 	"moments": {
-		"cycleparking": {
-			"title": "Cycle parking", 
-			"desc": "Quality of the parking provision"
-		},
 		"obstructions": {
 			"title": "Obstruction",
 			"desc": "A narrow place, difficult for cycles to pass",
@@ -20,11 +16,6 @@
 			"title": "Cycle-path",
 			"desc": "The quality of a dedicated cycle path",
 			"initial": 0.7
-		},
-		"closure": {
-			"title": "Temporary closure",
-			"desc": "A route temporarily barred to cycle access.", 
-			"mood":"sad"
 		},
 		"bikeshops": {
 			"title": "Bike shop",
@@ -40,11 +31,6 @@
 		"signs": {
 			"title": "General signage", 
 			"desc": "How clear or unclear the general signage is",
-			"keywords": ["sign","directions"]
-		},
-		"routesigns": {
-			"title": "Bike route sign", 
-			"desc": "A sign indicating cycle routes",
 			"keywords": ["sign","directions"]
 		},
 		"congestion": {

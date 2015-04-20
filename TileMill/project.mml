@@ -1,0 +1,292 @@
+{
+  "bounds": [
+    -1.72,
+    53.6947,
+    -1.3273,
+    53.9233
+  ],
+  "center": [
+    -1.5425,
+    53.8019,
+    12
+  ],
+  "format": "png",
+  "interactivity": false,
+  "minzoom": 0,
+  "maxzoom": 17,
+  "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
+  "Stylesheet": [
+    "style.mss",
+    "relief.mss",
+    "routes.mss",
+    "labels.mss",
+    "transport.mss"
+  ],
+  "Layer": [
+    {
+      "id": "countries",
+      "name": "countries",
+      "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
+      "geometry": "polygon",
+      "Datasource": {
+        "file": "http://mapbox-geodata.s3.amazonaws.com/natural-earth-1.4.0/cultural/10m-admin-0-countries.zip",
+        "type": "shape"
+      }
+    },
+    {
+      "geometry": "raster",
+      "extent": [
+        -5.000416085531461,
+        49.99947433520568,
+        -0.0001245890002921511,
+        55.00041712672995
+      ],
+      "id": "srtm36023785",
+      "class": "dem",
+      "Datasource": {
+        "file": "YOURDIRECTORYPATHHERE/srtm_36_02/srtm_36_02-3785.tif",
+        "band": "1"
+      },
+      "layer": null,
+      "srs-name": "900913",
+      "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
+      "advanced": {
+        "band": "1"
+      },
+      "name": "srtm36023785",
+      "status": "off"
+    },
+    {
+      "geometry": "raster",
+      "extent": [
+        -5.000416085531461,
+        49.99947433520568,
+        -0.0001245890002921511,
+        55.00041712672994
+      ],
+      "id": "srtm3785hs",
+      "class": "hs",
+      "Datasource": {
+        "file": "YOURDIRECTORYPATHHERE/srtm_36_02/srtm_36_02-3785-hs.tif",
+        "band": "1"
+      },
+      "srs-name": "900913",
+      "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
+      "advanced": {
+        "band": "1"
+      },
+      "name": "srtm3785hs",
+      "status": "off"
+    },
+    {
+      "geometry": "linestring",
+      "extent": [
+        -5.000416085531461,
+        50.14505323887619,
+        -0.0001245890002921511,
+        55.00041712672995
+      ],
+      "id": "srtm36023785contour",
+      "class": "contour",
+      "Datasource": {
+        "file": "YOURDIRECTORYPATHHERE/srtm_36_02/srtm_36_02-3785-contour.shp",
+        "band": "1",
+        "id": "srtm36023785contour",
+        "project": "routerater",
+        "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over"
+      },
+      "layer": null,
+      "srs-name": "900913",
+      "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over",
+      "advanced": {
+        "band": "1"
+      },
+      "name": "srtm36023785contour"
+    },
+    {
+      "geometry": "polygon",
+      "extent": [
+        -1.71699803778381,
+        53.69700335816044,
+        -1.33004990853044,
+        53.92099932691268
+      ],
+      "id": "landusages",
+      "class": "",
+      "Datasource": {
+        "file": "YOURDIRECTORYPATHHERE/leeds_england.imposm-geojson/leeds_england-landusages.geojson",
+        "id": "landuse",
+        "project": "routerater",
+        "srs": ""
+      },
+      "srs-name": "autodetect",
+      "srs": "",
+      "advanced": {},
+      "name": "landusages"
+    },
+    {
+      "geometry": "polygon",
+      "extent": [
+        -1.71699904361219,
+        53.697001262684665,
+        -1.330013950165835,
+        53.9209441739898
+      ],
+      "id": "water_areas",
+      "class": "",
+      "Datasource": {
+        "file": "YOURDIRECTORYPATHHERE/leeds_england.imposm-geojson/leeds_england-waterareas.geojson"
+      },
+      "srs-name": "autodetect",
+      "srs": "",
+      "advanced": {},
+      "name": "water_areas"
+    },
+    {
+      "geometry": "linestring",
+      "extent": [
+        -1.716994349746414,
+        53.69724056602026,
+        -1.330079161372509,
+        53.92098323365859
+      ],
+      "id": "waterway",
+      "class": "",
+      "Datasource": {
+        "file": "YOURDIRECTORYPATHHERE/leeds_england.imposm-geojson/leeds_england-waterways.geojson"
+      },
+      "srs-name": "autodetect",
+      "srs": "",
+      "advanced": {},
+      "name": "waterway"
+    },
+    {
+      "geometry": "linestring",
+      "extent": [
+        -1.747612,
+        53.71333740000001,
+        -1.3206040000000001,
+        53.9431247
+      ],
+      "id": "LCC",
+      "class": "",
+      "Datasource": {
+        "file": "YOURDIRECTORYPATHHERE/repo/data/lcc.geojson",
+        "id": "LCC",
+        "project": "routerater",
+        "srs": ""
+      },
+      "srs-name": "autodetect",
+      "srs": "",
+      "advanced": {},
+      "name": "LCC"
+    },
+    {
+      "geometry": "linestring",
+      "extent": [
+        -1.716997953964778,
+        53.69700059213238,
+        -1.330007579919396,
+        53.92099865636042
+      ],
+      "id": "osmroads",
+      "class": "osmroads",
+      "Datasource": {
+        "file": "YOURDIRECTORYPATHHERE/leeds.geojson",
+        "id": "osmroads",
+        "project": "routerater",
+        "srs": "",
+        "layer": "OGRGeoJSON"
+      },
+      "srs-name": "autodetect",
+      "srs": "",
+      "advanced": {},
+      "name": "osmroads",
+      "layer": null
+    },
+    {
+      "geometry": "linestring",
+      "extent": [
+        -1.716997953964778,
+        53.69700059213238,
+        -1.330007579919396,
+        53.92099865636042
+      ],
+      "id": "osmroadlabels",
+      "class": "",
+      "Datasource": {
+        "file": "YOURDIRECTORYPATHHERE/leeds.geojson"
+      },
+      "srs-name": "autodetect",
+      "srs": "",
+      "advanced": {},
+      "name": "osmroadlabels"
+    },
+    {
+      "geometry": "point",
+      "extent": [
+        -179.58997888396897,
+        -81.17908472282718,
+        179.38330358817024,
+        82.48332318035943
+      ],
+      "id": "cities",
+      "class": "",
+      "Datasource": {
+        "file": "http://mapbox-geodata.s3.amazonaws.com/natural-earth-1.4.0/cultural/10m-populated-places-simple.zip"
+      },
+      "srs-name": "autodetect",
+      "srs": "",
+      "advanced": {},
+      "name": "cities"
+    },
+    {
+      "geometry": "point",
+      "extent": [
+        -1.716963252885619,
+        53.69704686023793,
+        -1.330158118900414,
+        53.919736257923475
+      ],
+      "id": "transport",
+      "class": "places",
+      "Datasource": {
+        "file": "YOURDIRECTORYPATHHERE/leeds_england.imposm-geojson/leeds_england-transport_points.geojson",
+        "layer": "OGRGeoJSON",
+        "id": "transport",
+        "project": "routerater",
+        "srs": ""
+      },
+      "layer": "OGRGeoJSON",
+      "srs-name": "autodetect",
+      "srs": "",
+      "advanced": {},
+      "name": "transport"
+    },
+    {
+      "geometry": "polygon",
+      "extent": [
+        -1.716997953964778,
+        53.69700042449432,
+        -1.330069773640957,
+        53.92099295666626
+      ],
+      "id": "buildings",
+      "class": "places",
+      "Datasource": {
+        "file": "YOURDIRECTORYPATHHERE/leeds_england.imposm-geojson/leeds_england-buildings.geojson",
+        "layer": "OGRGeoJSON"
+      },
+      "layer": null,
+      "srs-name": "autodetect",
+      "srs": "",
+      "advanced": {},
+      "name": "buildings"
+    }
+  ],
+  "scale": 1,
+  "metatile": 2,
+  "name": "Route Rater",
+  "description": "A crowd-sourced cycling grade map",
+  "attribution": "Open Street Map contributors & Route Rater"
+}
