@@ -40,7 +40,7 @@ function RouteRater(){
 		"red": { color: ($('.red').css('background-color') ? $('.red').css('background-color') : '#b00000') },
 		"black": { color: "#000000" },
 		"white": { color: "#ffffff" },
-		"default": { weight: 8, opacity: 0.1 },
+		"default": { weight: 8, opacity: 0.2 },
 		"highlight": { weight: 8, opacity: 1 }
 	}
 	this.grades = ['green','blue','red','black'];
@@ -82,13 +82,13 @@ RouteRater.prototype.makeMap = function(){
 			errorTileUrl: 'missing.png'
 		});
 		
-		this.map = L.map('map',{'layers':this.layers.base["Route rater"],'center':[this.pos.lat, this.pos.lng],'zoom':this.pos.zoom});
+		this.map = L.map('map',{'layers':this.layers.base["Gray-scale"],'center':[this.pos.lat, this.pos.lng],'zoom':this.pos.zoom});
 		this.control = L.control.layers(this.layers.base,this.layers.overlay);
 		this.control.addTo(this.map);
 		L.control.scale().addTo(this.map);
 	}
 
-	this.icons.basic = L.icon({iconUrl: 'icons/.png',shadowUrl: 'leaf-shadow.png',iconSize:[38, 95],shadowSize:[50, 64],iconAnchor:[22, 94],shadowAnchor: [4, 62],popupAnchor:  [-3, -76]});
+	this.icons.basic = L.icon({iconUrl: 'images/marker-icon.png',shadowUrl: 'images/marker-shadow.png',iconSize:[38, 95],shadowSize:[50, 64],iconAnchor:[22, 94],shadowAnchor: [4, 62],popupAnchor:  [-3, -76]});
 
 	var _obj = this;
 	this.map.on('moveend',function(e){
@@ -119,7 +119,12 @@ RouteRater.prototype.makeMap = function(){
 	var html = '<ol class="gradeselection">';
 	for(var i = 0; i < this.grades.length ; i++) html += '<li><div class="'+this.grades[i]+'"></div></li>';
 	html += '</ol>';
-	html += '<div id="grade_desc"><div class="inner"></div></div>';
+	html += '<div id="gradedescriptiontoggle">\?</div>';
+	html += '<div id="gradedescription"></div>';
+	$(document).on('click','#gradedescriptiontoggle',function(e){
+		$('#gradedescription').toggle();
+	});
+
 	$('#grade').html(html).hide();
 	$(document).on('click','.gradeselection li div',{me:this},function(e){ e.data.me.setRoad($(this).attr("class")); })
 
@@ -150,6 +155,7 @@ RouteRater.prototype.addMoment = function(la,ln,ts){
 }
 
 RouteRater.prototype.getRoads = function(callback){
+	console.log('getRoads')
 	if(this.map.getZoom() > 15){
 		var bounds = this.map.getBounds();
 	
@@ -286,6 +292,7 @@ RouteRater.prototype.addRoutes = function(data){
 RouteRater.prototype.setRoad = function(properties){
 
 	$('.gradeselection li.selected').removeClass('selected');
+	$('.gradeselection li div').html('&nbsp;');//&#x2713;
 	if(properties){
 		$('#grade').show();
 		if(typeof properties==="string"){
@@ -303,9 +310,7 @@ RouteRater.prototype.setRoad = function(properties){
 		if(this.road.newgrade == this.road.grade) this.road.newgrade = null;
 		g = (this.road.newgrade ? this.road.newgrade : this.road.grade);
 		grade = this.grades[g-1];
-		$('.gradeselection li:eq('+(g-1)+')').addClass('selected');
-		$('#grade_desc').removeClass().addClass(grade);
-		$('#grade_desc .inner').html(this.data.grades[grade].desc);
+		$('.gradeselection li:eq('+(g-1)+')').addClass('selected').find('div').html('&#x2713;');
 		$('#grade').show();
 
 		// Update form
@@ -317,8 +322,6 @@ RouteRater.prototype.setRoad = function(properties){
 	}else{
 		this.road = null;
 		$('#grade').hide();
-		$('#grade_desc').removeClass();
-		$('#grade_desc .inner').html('');
 	}
 
 
@@ -341,6 +344,7 @@ RouteRater.prototype.selectNearestRoad = function(loc,px){
 
 RouteRater.prototype.clear = function(txt){
 
+	console.log('clear')
 	if(!txt) txt = 'Click on the map to add a moment.';
 	$('#title').html(txt);
 	$('#details').html('');
@@ -367,16 +371,19 @@ RouteRater.prototype.processMoments = function(){
 
 		// We have no moments
 		var _obj = this;
-		this.timeout = setTimeout(function(){ _obj.clear('Couldn\'t find your location. Click on the map to add a moment'); this.i = -1; },5000);
+		var s = 10000;
+		this.timeout = setTimeout(function(){ console.log('timeout'); _obj.clear('Couldn\'t find your location. Click on the map to add a moment'); this.i = -1; },s);
 		if(this.trygeolocate){
 			this.i = -1;	// reset counter
 			// Try to use the user's location
-			this.map.locate({setView: true,timeout:5000});
+			this.map.locate({setView: true,timeout:s});
 		}
-		console.log(this.trygeolocate,this.clickable)
+		//console.log(this.trygeolocate,this.clickable)
 
 	}else{
 
+		if(this.timeout) clearTimeout(this.timeout);
+		
 		if(this.i < this.moments.length){
 			this.marker = L.latLng(this.moments[this.i].lat,this.moments[this.i].lng);
 			
@@ -394,7 +401,7 @@ RouteRater.prototype.processMoments = function(){
 			var pre = "";
 			var d = new Date(this.moments[this.i].time);
 			this.timestamp = this.moments[this.i].time;
-			if(this.moments.length > 0) pre = '<h2>Rate moment'+(this.moments.length > 1 ? ' '+(this.i+1)+' of '+(this.moments.length) : '')+'</h2>';
+			if(this.moments.length > 0) pre = '<h2>Rating moment'+(this.moments.length > 1 ? ' '+(this.i+1)+' of '+(this.moments.length) : '')+'</h2>';
 			$('#title').html(pre);
 			$('#details').html('<time datetime="'+this.moments[this.i].time+'" class="datestamp">'+friendlyTime(d)+'</time><div class="routename"></div>')
 	
@@ -411,9 +418,10 @@ RouteRater.prototype.processMoments = function(){
 					// Find the nearest graded path within 20 pixels
 					this.selectNearestRoad(this.marker,20);
 				}
-				
 			});
-	
+
+			$(window).trigger('resize')
+			
 		}else{
 			console.log('done')
 			this.i = -1;
@@ -492,7 +500,7 @@ RouteRater.prototype.selectMomentType = function(id,i){
 	if(this.results[i][0].mood) $('.mood_'+this.results[i][0].mood+' input').trigger('click');
 
 	if($('.selectedmoment').length==0) $('#typeahead').after('<div class="selectedmoment"></div>')
-	$('.selectedmoment').html('<a href="#"><span href="#" class="change">&#10799;</span><span class="title">'+this.results[i][0].title+'</span><span class="desc">'+this.results[i][0].desc+'</span></a></div>');
+	$('.selectedmoment').html('<a href="#"><img src="../images/icon_'+this.results[i][2]+'_selected.png" alt="'+this.results[i][0].title+'" /><span href="#" class="change">&#10799;</span><span class="title">'+this.results[i][0].title+'</span><span class="desc">'+this.results[i][0].desc+'</span></a></div>');
 
 	// Update the search text
 	$('#filter').val(this.results[i][0].title).hide();
@@ -516,7 +524,7 @@ RouteRater.prototype.typeahead = function(id){
 	
 		this.typeaheadsetup = true;
 	
-		if($('#'+id).length == 0) $('#moment').prepend('<div class=""><label for="filter" class="sr-only">Category:</label> <input type="text" name="filter" id="filter" class="fullwidth" placeholder="Category e.g. Busy road, good cycle path" /></div>');
+		if($('#'+id).length == 0) $('#moment').prepend('<div class="filterholder"><label for="filter" class="">Category:</label> <input type="text" name="filter" id="filter" class="fullwidth" placeholder="Find e.g. cycle-path, steps, obstruction" /></div>');
 	
 		// Add the typeahead div and hide it
 		$('#moment').append('<div id="'+t+'"></div>');
@@ -650,8 +658,8 @@ RouteRater.prototype.search = function(str){
 		n = results.length;
 		for(var i = 0; i < n; i++){
 			//if(results[i][1] > 0 && results[i][1] >= results[0][1]/10) html += '<li><a href="#" data="'+i+'"><span class="score">'+Math.round(100*results[i][1]/results[0][1])+'% match</span><span class="title">'+results[i][0].title+'</span><span class="desc">'+results[i][0].desc+'</span></a></li>';
-			if(results[i][1] > 0) html += '<li><a href="#" class="selecter" data="'+i+'"><span class="score">'+Math.round(100*results[i][1]/results[0][1])+'% match</span><span class="title">'+results[i][0].title+'</span><span class="desc">'+results[i][0].desc+'</span></a></li>';
-		}
+			if(results[i][1] > 0) html += '<li><a href="#" class="selecter" data="'+i+'"><img src="../images/icon_'+results[i][2]+'.png" alt="'+results[i][0].title+'" /><span class="score">'+Math.round(100*results[i][1]/results[0][1])+'% match</span><span class="title">'+results[i][0].title+'</span><span class="desc">'+results[i][0].desc+'</span></a></li>';
+		}//<img src="../images/icon_'+results[i][2]+'.png" 
 		html += "</ol>";
 	}
 
@@ -671,6 +679,12 @@ RouteRater.prototype.init = function(){
 		context: this,
 		success: function(data){
 			this.data = data;
+
+			//BLAH
+			html = '<ol>';
+			for(var i in this.data.grades) html += '<li><span class="'+i+' box"></span>'+this.data.grades[i].desc+"</li>"
+			html += '</ol>';
+			$('#gradedescription').append(html);
 
 			this.typeahead('filter');
 			
