@@ -1,0 +1,116 @@
+{
+	"grades": {
+		"green": { "title": "Grade: green (beginner)", "desc": "Off-road/separate to vehicles/gentle gradients", "keywords": ["green","easy","beginner","off-road"], "img": "" },
+		"blue": { "title": "Grade: blue (intermediate)", "desc": "Some or limited experience. Residential roads/low traffic/slow speeds", "keywords": ["blue","intermediate","hill"], "img": "" },
+		"red": { "title": "Grade: red (hard)", "desc": "Busy roads/heavy traffic/filter lanes/big roundabouts/traffic lights/steep hills", "keywords": ["red","hard","hill"], "img": "" },
+		"black": { "title": "Grade: black (extreme)", "desc": "Multi-lane sections/gyratories/lots of experience and luck", "keywords": ["black","advanced","extreme"], "img": "" }
+	},
+	"moments": {
+		"obstructions": {
+			"title": "Obstruction",
+			"desc": "A narrow place, difficult for cycles to pass",
+			"keywords": ["sign-post","lamp-post","bollard","post","fence","street light","gate"],
+			"mood":"sad"
+		},
+		"cycleways": {
+			"title": "Cycle-path",
+			"desc": "The quality of a dedicated cycle path",
+			"initial": 0.7
+		},
+		"bikeshops": {
+			"title": "Bike shop",
+			"desc": "A place to buy or fix bikes",
+			"mood":"happy"
+		},
+		"potholes": {
+			"title": "Pothole",
+			"desc": "A hole in the road",
+			"initial":0.5,
+			"mood":"sad"
+		},
+		"signs": {
+			"title": "General signage", 
+			"desc": "How clear or unclear the general signage is",
+			"keywords": ["sign","directions"]
+		},
+		"congestion": {
+			"title": "Congestion",
+			"desc": "A place where cyclists will be delayed or need to take extra care",
+			"initial": 0.6,
+			"mood":"sad"
+		},
+		"destinations": {
+			"title": "Destination",
+			"desc": "A place where cyclists may want to visit",
+			"mood":"sad"
+		},
+		"steps": {
+			"title": "Steps", 
+			"desc": "A place where you will have to carry your bike"
+		},
+		"unevenroad": {
+			"title": "Road: uneven",
+			"desc": "A road with an uneven or bumpy surface",
+			"mood":"sad"
+		},
+		"cafe": {
+			"title": "Cycle-friendly cafe",
+			"desc": "A cafe that welcomes people with bicycles",
+			"initial": 0.8,
+			"mood":"happy"
+		},
+		"junction": {
+			"title": "Junction",
+			"desc": "A junction where you need to take care",
+			"keywords":["junction","intersection","busy"],
+			"mood":"sad"
+		},
+		"lighting": {
+			"title": "Lighting", 
+			"desc": "Quality of the street lighting"
+		},
+		"pub": {
+			"title": "Cycle-friendly pub",
+			"desc": "A pub that welcomes people with bicycles",
+			"mood":"happy"
+		},
+		"incident": {
+			"title": "Near miss or accident", 
+			"desc": "A hairy moment with another vehicle or pedestrian", 
+			"mood":"sad"
+		}
+	},
+	"tree": {
+		"text": "Rate a moment",
+		"options": [{
+			"text": "Junction",
+			"options": [
+				"junction_busy",
+				"junction_confusing"
+			]
+		},{
+			"text": "Amenities",
+			"options": [
+				"cfriend_cafe",
+				"cfriend_pub"
+			]
+		},{
+			"text": "Incident",
+			"options": [{
+				"text": "Near miss",
+				"options": [
+					"incident_nearmiss_bus",
+					"incident_nearmiss_car",
+					"incident_nearmiss_van",
+					"incident_nearmiss_bike",
+					"incident_nearmiss_person"
+				]
+			},{
+				"text": "Road traffic accident",
+				"options": [
+					"incident_rta"
+				]
+			}]
+		}]
+	}
+}
