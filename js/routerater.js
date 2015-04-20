@@ -327,7 +327,7 @@ RouteRater.prototype.setRoad = function(properties){
 }
 
 RouteRater.prototype.selectNearestRoad = function(loc,px){
-	if(!px) px = 20
+	if(!px) px = 15
 
 	// Find the nearest graded path within px pixels
 	this.nearest = L.GeometryUtil.closestLayerSnap(this.map, this.linesFeatureLayer.getLayers(), loc, px, true);
@@ -390,7 +390,7 @@ RouteRater.prototype.processMoments = function(){
 			var _obj = this;
 			this.markers[this.markers.length-1].on('dragend',function(e){
 				var marker = e.target;
-				_obj.selectNearestRoad(marker.getLatLng(),20);
+				_obj.selectNearestRoad(marker.getLatLng());
 			})
 	
 			// Update HTML
@@ -411,8 +411,8 @@ RouteRater.prototype.processMoments = function(){
 				// Once we've loaded the roads we'll select the nearest one
 				// Do we have the line layer?
 				if(this.linesFeatureLayer){
-					// Find the nearest graded path within 20 pixels
-					this.selectNearestRoad(this.marker,20);
+					// Find the nearest graded path
+					this.selectNearestRoad(this.marker);
 				}
 			});
 
@@ -445,25 +445,31 @@ RouteRater.prototype.saveable = function(){
 }
 
 RouteRater.prototype.save = function(){
-	var query = "";
+	var query = "http://www.strudel.org.uk/cgi-bin/routerater.pl";
 	var saved = false;
+	var url = 
 	
 	if(this.marker){
 		if(this.road.newgrade){
-			query = (query ? '&':'')+'osm_id='+this.road.osm_id+'&grade='+this.road.newgrade+'&timestamp='+this.timestamp;
-			console.log(query);
+			$.ajax({
+				dataType: "json",
+				url: url+'?verb=add&osm_id='+this.road.osm_id+'&grade='+this.road.newgrade+'&timestamp='+this.timestamp,
+				success: function(data){ }
+			})
 			saved = true;
 		}
 		if(this.mood && this.moment){
-			query = 'lat='+this.marker.lat+'&lng='+this.marker.lng+'mood='+this.mood+'&type='+this.moment+'&timestamp='+this.timestamp;
-			console.log(query);
+			$.ajax({
+				dataType: "json",
+				url: url+'?verb=add&latitude='+this.marker.lat+'&longitude='+this.marker.lng+'&rating='+this.mood+'&type='+this.moment+'&timestamp='+this.timestamp,
+				success: function(data){ }
+			})
 			saved = true;
 		}
 	}
 
-	if(saved){
-		this.processMoments();
-	}
+	if(saved) this.processMoments();
+
 	return this;
 }
 
@@ -679,7 +685,6 @@ RouteRater.prototype.init = function(){
 		success: function(data){
 			this.data = data;
 
-			//BLAH
 			html = '<ol>';
 			for(var i in this.data.grades) html += '<li><span class="'+i+' box"></span>'+this.data.grades[i].desc+"</li>"
 			html += '</ol>';
