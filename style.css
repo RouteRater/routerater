@@ -52,7 +52,7 @@ body.map #content {
 }
 body.map #main { height: 100%; }
 body.rate #main { display: table; width: 100%; }
-body.rate #map { height: 400px; display: table-cell; width: 600px; }
+body.rate #map { height: 400px; display: table-cell; width: 600px; border: 1px solid #e7e7e7; }
 body.rate #rate { display: table-cell; padding-left: 2em; }
 #navbar { float: right; }
 ul.nav { display: inline-block; }
