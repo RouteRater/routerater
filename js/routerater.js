@@ -452,7 +452,7 @@ RouteRater.prototype.save = function(){
 		if(this.road && this.road.newgrade){
 			$.ajax({
 				dataType: "jsonp",
-				url: url+'?verb=add&osm_id='+this.road.osm_id+'&grade='+this.road.newgrade+'&timestamp='+this.timestamp,
+				url: url+'?verb=add&osmid='+this.road.osm_id+'&grade='+this.road.newgrade+'&timestamp='+this.timestamp,
 				success: function(data){ }
 			})
 			saved = true;
