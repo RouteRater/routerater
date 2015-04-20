@@ -4,7 +4,6 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" />
 		<link href='style.css' rel='stylesheet' type="text/css">
 		<script src="js/jquery-1.10.0.min.js"></script>
-		<script src="js/routerater.js"></script>
 		<title>Route Rater!</title>
 	</head>
 	<body>
@@ -17,20 +16,21 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a href="index.html" class="navbar-brand">Route Rater</a>
+					<a href="index.html" class="navbar-brand">Route Rater <div id="logo"><div class="green"></div><div class="blue"></div><div class="red"></div><div class="black"></div></div></a>
 				</div><div class="navbar-collapse collapse" id="navbar">
 					<ul class="nav navbar-nav">
-						<li class=""><a href="map.html">Map</a></li>
-                        <li class=""><a href="http://slowe.github.io/routerater/blog/">Blog</a></li>
-                        <li class=""><a href="https://github.com/slowe/routerater/">About</a></li>
-                        <li><a href="https://github.com/slowe/routerater/issues/new?title=Hello&amp;labels=question">Contact</a></li>
+						<li class=""><a href="map.html">Map</a></li><li class=""><a href="rate/index.html">Rate</a></li><li class=""><a href="http://slowe.github.io/routerater/blog/">Blog</a></li><li class=""><a href="https://github.com/slowe/routerater/">About</a></li><li><a href="https://github.com/slowe/routerater/issues/new?title=Hello&amp;labels=question">Contact</a></li>
 					</ul>
 				</div><!--/.nav-collapse -->
 			</div><!--/.container -->
 		</nav>
 		<div id="content" class="container">
-			<p>Add a moment:</p>
-			<div id="main"></div>
+			<div id="main">
+				<p>An idea developed at the ODI Leeds #hackmyroute day.</p>
+				<p>Basic idea: inspired by <a href="https://en.wikipedia.org/wiki/Piste#Europe_POU">ski-routes</a>, create a colour-coded map of streets using crowd sourcing. The idea developed to include a feedback mechanism where cyclists could quickly and easily report things about their route. Those things might include bad infrastructure (e.g. lamp-post in a cycle lane), busy or confusing intersections, near-misses with motor vehicles, as well as positive things like cycle-friendly cafes or pubs.</p>
+				<h2>API</h2>
+				<p>An example of <a href="file:///Users/stuartlowe/Projects/routerater/repo/rate/index.html?lat=53.796405214684256&lng=-1.5352481603622437&time=2015-04-18T21:00:03+01:00&lat=53.796411551738345&lng=-1.5335100889205933&time=2015-04-19T14:03:43+01:00&lat=53.79833797179022&lng=-1.5296262502670288&time=2015-04-19T14:11:05+01:00">sending moments to RouteRater as a query string</a> for categorisation by the user.</p>
+			</div>
 		</div>
 	</body>
 </html>

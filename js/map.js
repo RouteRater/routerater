@@ -25,6 +25,7 @@ $(document).ready(function(){
 		map = L.map('main',{'layers':layers.base["Route rater"],'center':[pos.latitude, pos.longitude],'zoom':pos.zoom});
 		control = L.control.layers(layers.base,layers.overlay);
 		control.addTo(map);
+		L.control.scale().addTo(map);
 	}
 	var icons = {};
 
