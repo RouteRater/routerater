@@ -523,7 +523,7 @@ RouteRater.prototype.typeahead = function(id){
 	
 		this.typeaheadsetup = true;
 	
-		if($('#'+id).length == 0) $('#moment').prepend('<h3>1. Choose a category</h3><div class="filterholder"><label for="filter" class="sr-only">Category:</label> <input type="text" name="filter" id="filter" class="fullwidth" placeholder="Find e.g. cycle-path, steps, obstruction" /></div>');
+		if($('#'+id).length == 0) $('#moment').prepend('<h3>1. Choose a category</h3><div class="filterholder"><label for="filter" class="sr-only">Category:</label> <input type="text" name="filter" id="filter" class="fullwidth" placeholder="Search category list" /></div>');
 	
 		// Add the typeahead div and hide it
 		$('#moment').append('<div id="'+t+'"></div>');

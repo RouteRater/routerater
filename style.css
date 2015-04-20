@@ -26,9 +26,10 @@ body {
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 	font-size: 16px;
 }
-h1,h2,h3,h4 { margin-bottom: 0.666em; }
+h1,h2,h3,h4 { margin-bottom: 0.666em; color: #606060; }
 h1 { font-size: 1.5em; }
-h2 { font-size: 1.25em; }
+h2 { font-size: 1.25em; font-weight: 500; }
+h3 { font-weight: 500; }
 p { margin: 0.5em 0em; line-height: 1.5em; }
 ul,ol { list-style-type: none; }
 
@@ -61,7 +62,7 @@ body.map #content {
 }
 body.map #main { height: 100%; }
 body.rate #main { display: table; width: 100%; }
-body.rate #map { height: 400px; display: table-cell; width: 600px; border: 1px solid #e7e7e7; }
+body.rate #map { height: 500px; display: table-cell; width: 600px; border: 1px solid #e7e7e7; }
 body.rate #rate { display: table-cell; padding-left: 2em; }
 #navbar { float: right; }
 ul.nav { display: inline-block; }
@@ -90,14 +91,13 @@ nav.navbar li.active a, ul.nav a:hover, ul.nav a:focus { background-color: #e7e7
 #logo { display: inline-block; padding: 0; padding-left: 0.25em; height: 1em; }
 #logo div { display: inline-block; width: 0.5em; height: 0.5em; margin-top: 0; margin-right: 0.25em; }
 
-h3 { font-weight: bold; }
 #details { color: #606060; font-size: 0.8em; }
 /* Type-ahead styles */
 #filter, #typeahead {
 	font-size: 1em;
 }
 #typeahead {
-	max-height: 168px;
+	max-height: 188px;
 	overflow-y: auto;
 }
 #typeahead ol {
@@ -109,15 +109,15 @@ h3 { font-weight: bold; }
 	background-color: white;
 }
 #typeahead li img,.selectedmoment img {
-	width: 24px;
-	height: 24px;
+	width: 32px;
+	height: 32px;
 	float: left;
 	overflow: hidden;
 	margin-right: 0.5em;
 }
 #moment a {
 	display: block;
-	padding: 0.5em;
+	padding: 0.5em 0.5em;
 	text-decoration: none;
 	color: black;
 }
@@ -135,7 +135,8 @@ h3 { font-weight: bold; }
 }
 #moment .desc {
 	display: block;
-	font-size: 0.5em;
+	font-size: 0.6em;
+	margin-top: 0.5em;
 	color: #909090;
 }
 #typeahead li a:focus,#typeahead li a:hover,#typeahead li a.selected {
