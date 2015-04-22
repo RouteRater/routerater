@@ -32,14 +32,10 @@ $(document).ready(function(){
 	var ratings = ['happy','neutral','sad'];
 	
 	for(var i = 0; i < categories.length; i++){
-<<<<<<< HEAD
-		icons[categories[i]] = L.icon({iconUrl: 'images/icon_'+categories[i]+'.png',shadowUrl: 'images/icon_shadow.png',iconSize:[32, 32],shadowSize:[40, 40],iconAnchor:[16, 16],shadowAnchor: [18, 18],popupAnchor:  [0, -16]});
-=======
 		icons[categories[i]] = L.icon({iconUrl: 'images/icon_'+categories[i]+'.png',shadowUrl: 'images/icon_shadow.png',iconSize:[32, 32],shadowSize:[40, 40],iconAnchor:[16, 16],shadowAnchor: [18, 14],popupAnchor:  [0, -16]});
 		for(var j = 0; j < ratings.length; j++){
 			icons[categories[i]+"_"+ratings[j]] = L.icon({iconUrl: 'images/icon_'+categories[i]+'_'+ratings[j]+'.png',shadowUrl: 'images/icon_shadow.png',iconSize:[32, 32],shadowSize:[40, 40],iconAnchor:[16, 16],shadowAnchor: [18, 14],popupAnchor:  [0, -16]});
 		}
->>>>>>> master
 	}
 
 	$.ajax({
