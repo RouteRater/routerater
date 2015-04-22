@@ -765,6 +765,14 @@ function lightbox(content,trigger,options){
 		e.data.me.close();
 	});
 	
+	$(document).on('click',this.content,function(e){
+		e.stopPropagation();
+	});
+	$(document).on('click','.lightbox_top',{me:this},function(e){
+		e.data.me.close();
+	});
+
+
 	// Deal with the window changing size
 	var _obj = this;
 	$(window).resize(function(){ _obj.centre(); });
