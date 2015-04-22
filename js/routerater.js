@@ -327,7 +327,7 @@ RouteRater.prototype.setRoad = function(properties){
 }
 
 RouteRater.prototype.selectNearestRoad = function(loc,px){
-	if(!px) px = 20
+	if(!px) px = 15
 
 	// Find the nearest graded path within px pixels
 	this.nearest = L.GeometryUtil.closestLayerSnap(this.map, this.linesFeatureLayer.getLayers(), loc, px, true);
@@ -368,7 +368,7 @@ RouteRater.prototype.processMoments = function(){
 		// We have no moments
 		var _obj = this;
 		var s = 10000;
-		this.timeout = setTimeout(function(){ console.log('timeout'); _obj.clear('We couldn\'t find your location. Not to worry. Move the map to the location and click on it to add a moment.'); this.i = -1; },s);
+		this.timeout = setTimeout(function(){ console.log('timeout'); _obj.clear('We couldn\'t find your location. Not to worry. Move the map to the location you want and click it to add a moment.'); this.i = -1; },s);
 		if(this.trygeolocate){
 			this.i = -1;	// reset counter
 			// Try to use the user's location
@@ -390,7 +390,7 @@ RouteRater.prototype.processMoments = function(){
 			var _obj = this;
 			this.markers[this.markers.length-1].on('dragend',function(e){
 				var marker = e.target;
-				_obj.selectNearestRoad(marker.getLatLng(),20);
+				_obj.selectNearestRoad(marker.getLatLng());
 			})
 	
 			// Update HTML
@@ -411,8 +411,8 @@ RouteRater.prototype.processMoments = function(){
 				// Once we've loaded the roads we'll select the nearest one
 				// Do we have the line layer?
 				if(this.linesFeatureLayer){
-					// Find the nearest graded path within 20 pixels
-					this.selectNearestRoad(this.marker,20);
+					// Find the nearest graded path
+					this.selectNearestRoad(this.marker);
 				}
 			});
 
@@ -445,25 +445,30 @@ RouteRater.prototype.saveable = function(){
 }
 
 RouteRater.prototype.save = function(){
-	var query = "";
+	var url = "http://www.strudel.org.uk/cgi-bin/routerater.pl";
 	var saved = false;
 	
 	if(this.marker){
-		if(this.road.newgrade){
-			query = (query ? '&':'')+'osm_id='+this.road.osm_id+'&grade='+this.road.newgrade+'&timestamp='+this.timestamp;
-			console.log(query);
+		if(this.road && this.road.newgrade){
+			$.ajax({
+				dataType: "jsonp",
+				url: url+'?verb=add&osmid='+this.road.osm_id+'&grade='+this.road.newgrade+'&timestamp='+this.timestamp,
+				success: function(data){ }
+			})
 			saved = true;
 		}
 		if(this.mood && this.moment){
-			query = 'lat='+this.marker.lat+'&lng='+this.marker.lng+'mood='+this.mood+'&type='+this.moment+'&timestamp='+this.timestamp;
-			console.log(query);
+			$.ajax({
+				dataType: "jsonp",
+				url: url+'?verb=add&latitude='+this.marker.lat+'&longitude='+this.marker.lng+'&rating='+this.mood+'&type='+this.moment+'&timestamp='+this.timestamp,
+				success: function(data){ }
+			})
 			saved = true;
 		}
 	}
 
-	if(saved){
-		this.processMoments();
-	}
+	if(saved) this.processMoments();
+
 	return this;
 }
 
@@ -496,7 +501,7 @@ RouteRater.prototype.selectMomentType = function(id,i){
 	this.moment = id;
 	
 	// Trigger default mood for this type of moment
-	if(this.results[i][0].mood) $('.mood_'+this.results[i][0].mood+' input').trigger('click');
+	//if(this.results[i][0].mood) $('.mood_'+this.results[i][0].mood+' input').trigger('click');
 
 	if($('.selectedmoment').length==0) $('#typeahead').after('<div class="selectedmoment"></div>')
 	$('.selectedmoment').html('<a href="#"><img src="../images/icon_'+this.results[i][2]+'_selected.png" alt="'+this.results[i][0].title+'" /><span href="#" class="change">&#10799;</span><span class="title">'+this.results[i][0].title+'</span><span class="desc">'+this.results[i][0].desc+'</span></a></div>');
@@ -523,7 +528,7 @@ RouteRater.prototype.typeahead = function(id){
 	
 		this.typeaheadsetup = true;
 	
-		if($('#'+id).length == 0) $('#moment').prepend('<h3>1. Choose a category</h3><div class="filterholder"><label for="filter" class="sr-only">Category:</label> <input type="text" name="filter" id="filter" class="fullwidth" placeholder="Find e.g. cycle-path, steps, obstruction" /></div>');
+		if($('#'+id).length == 0) $('#moment').prepend('<h3>1. Choose a category</h3><div class="filterholder"><label for="filter" class="sr-only">Category:</label> <input type="text" name="filter" id="filter" class="fullwidth" placeholder="Search category list" /></div>');
 	
 		// Add the typeahead div and hide it
 		$('#moment').append('<div id="'+t+'"></div>');
@@ -679,7 +684,6 @@ RouteRater.prototype.init = function(){
 		success: function(data){
 			this.data = data;
 
-			//BLAH
 			html = '<ol>';
 			for(var i in this.data.grades) html += '<li><span class="'+i+' box"></span>'+this.data.grades[i].desc+"</li>"
 			html += '</ol>';
@@ -687,9 +691,9 @@ RouteRater.prototype.init = function(){
 
 			this.typeahead('filter');
 			
-			$('#moment').append('<div id="mood"><h3>2. Your opinion</h3><div class="mood mood_happy" data="happy"><input type="radio" name="mood" value="good" /></div><div class="mood mood_neutral" data="neutral"><input type="radio" name="mood" value="none" /></div><div class="mood mood_sad" data="sad"><input type="radio" name="mood" value="problem" /></div></div>');
+			$('#moment').append('<div id="mood"><h3>2. Rate it</h3><div class="mood mood_happy" data="happy"><input type="radio" name="mood" value="good" /></div><div class="mood mood_neutral" data="neutral"><input type="radio" name="mood" value="none" /></div><div class="mood mood_sad" data="sad"><input type="radio" name="mood" value="problem" /></div></div>');
 
-			this.clear('Trying to find your location...');
+			this.clear('Trying to find your location. Hang on a moment...');
 			$('#moment').hide();
 
 			// Once we have the config data we can process any moments
