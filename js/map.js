@@ -29,9 +29,13 @@ $(document).ready(function(){
 	}
 	var icons = {};
 	var categories = ['obstructions','cycleways','bikeshops','potholes','signs','congestion','destinations','steps','unevenroad','cafe','junction','lighting','pub','incident']
-
+	var ratings = ['happy','neutral','sad'];
+	
 	for(var i = 0; i < categories.length; i++){
 		icons[categories[i]] = L.icon({iconUrl: 'images/icon_'+categories[i]+'.png',shadowUrl: 'images/icon_shadow.png',iconSize:[32, 32],shadowSize:[40, 40],iconAnchor:[16, 16],shadowAnchor: [18, 14],popupAnchor:  [0, -16]});
+		for(var j = 0; j < ratings.length; j++){
+			icons[categories[i]+"_"+ratings[j]] = L.icon({iconUrl: 'images/icon_'+categories[i]+'_'+ratings[j]+'.png',shadowUrl: 'images/icon_shadow.png',iconSize:[32, 32],shadowSize:[40, 40],iconAnchor:[16, 16],shadowAnchor: [18, 14],popupAnchor:  [0, -16]});
+		}
 	}
 
 	$.ajax({
@@ -46,7 +50,7 @@ $(document).ready(function(){
 		
 		// add markers with some popup content to it and open the popup
 		for(var i = 0 ; i < data.moments.length ; i++){
-			L.marker([data.moments[i].latitude, data.moments[i].longitude],{icon:icons[data.moments[i].type]}).bindPopup(data.moments[i].type).addTo(layers.overlay.moments);
+			L.marker([data.moments[i].latitude, data.moments[i].longitude],{icon:icons[data.moments[i].type+(data.moments[i].rating ? "_"+data.moments[i].rating : "")]}).bindPopup(data.moments[i].type).addTo(layers.overlay.moments);
 		}
 		layers.overlay.moments.addTo(map);
 		control.removeFrom(map);
