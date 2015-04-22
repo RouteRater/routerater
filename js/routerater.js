@@ -793,7 +793,7 @@ lightbox.prototype.fullscreen = function(){
 	// Wrap out content
 	$(this.content).show().wrap("<div class='lightbox_top'><div class='lightbox_inner'><\/div><\/div>");
 
-	// Add close button
+	// Add a close button
 	if(this.lb.find('.close').length==0) $('.lightbox_top').prepend('<a href="#" class="close">&times;<\/a>');
 	$('.lightbox_top .close').css({'font-size': '2em','line-height': '0.8em','position': 'absolute', 'right': '10px','text-decoration': 'none', 'top': '10px','color':'inherit'});
 		
