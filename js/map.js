@@ -31,7 +31,7 @@ $(document).ready(function(){
 	var categories = ['obstructions','cycleways','bikeshops','potholes','signs','congestion','destinations','steps','unevenroad','cafe','junction','lighting','pub','incident']
 
 	for(var i = 0; i < categories.length; i++){
-		icons[categories[i]] = L.icon({iconUrl: 'images/icon_'+categories[i]+'.png',shadowUrl: 'images/icon_shadow.png',iconSize:[32, 32],shadowSize:[40, 40],iconAnchor:[16, 16],shadowAnchor: [17, 15],popupAnchor:  [0, -16]});
+		icons[categories[i]] = L.icon({iconUrl: 'images/icon_'+categories[i]+'.png',shadowUrl: 'images/icon_shadow.png',iconSize:[32, 32],shadowSize:[40, 40],iconAnchor:[16, 16],shadowAnchor: [22, 18],popupAnchor:  [0, -16]});
 	}
 
 	$.ajax({
