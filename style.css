@@ -186,7 +186,7 @@ ol.gradeselection li div, #gradedescriptiontoggle {
 ol.gradeselection li .check { display: none; }
 ol.gradeselection li.selected .check { display: inline-block; }
 #gradedescriptiontoggle { display: inline-block; width: 2em; height: 2em; line-height: 2em; cursor: pointer; }
-#gradedescription { padding: 4em; margin-bottom: 1em; background-color: #f8f8f8; border: 1px solid #e7e7e7; }
+#gradedescription { padding: 3em; margin-bottom: 1em; background-color: #f8f8f8; border: 1px solid #e7e7e7; }
 #grade #gradedescription { display: none; }
 #gradedescription li { margin-top: 1em; line-height: 2em;}
 #gradedescription li:first-child { margin-top: 0em; }
