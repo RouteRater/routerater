@@ -58,7 +58,10 @@ $(document).ready(function(){
 		
 		// add markers with some popup content to it and open the popup
 		for(var i = 0 ; i < data.moments.length ; i++){
-			L.marker([data.moments[i].latitude, data.moments[i].longitude],{icon:icons[data.moments[i].type+(data.moments[i].rating ? "_"+data.moments[i].rating : "")]}).bindPopup(data.moments[i].type).addTo(layers.overlay.moments);
+
+			var d = new Date(data.moments[i].datetime);
+			stamp = '<time datetime="'+data.moments[i].datetime+'" title="'+data.moments[i].datetime+'" class="datestamp">'+friendlyTime(d)+'</time>';
+			L.marker([data.moments[i].latitude, data.moments[i].longitude],{icon:icons[data.moments[i].type+(data.moments[i].rating ? "_"+data.moments[i].rating : "")]}).bindPopup(data.moments[i].type+"<br />"+stamp).addTo(layers.overlay.moments);
 		}
 		layers.overlay.moments.addTo(map);
 		control.removeFrom(map);

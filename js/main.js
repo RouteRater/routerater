@@ -117,3 +117,34 @@ lightbox.prototype.close = function(){
 	}
 	return this;
 }
+
+function friendlyTime(d){
+	if(!d) return "";
+	var midnight = new Date();
+	var now = new Date();
+	midnight.setHours(0)
+	midnight.setMinutes(0);
+	midnight.setSeconds(0);
+	dt = now-d;
+
+	h = d.getHours();
+	if(h < 10) h = "0"+h;
+	m = d.getMinutes();
+	if(m < 10) m = "0"+m;
+
+	if(d-midnight >= 0) return "today at "+h+":"+m;
+	else{
+
+		if(d-midnight > -86400000){
+			return "yesterday at "+h+":"+m;
+		}else{
+			var mons = new Array('January','February','March','April','May','June','July','August','September','October','November','December');
+			if(typeof d.getYear!=="function") return "";
+			y = d.getYear()+'';
+			if(y.length < 4) y = (y-0+1900);
+			if(dt < (360*86400)) return d.getDate()+' '+mons[d.getMonth()]+' at '+h+':'+m+'';
+			else return d.getDate()+' '+mons[d.getMonth()]+' '+y+' at '+h+':'+m+'';
+		}
+	}
+	return "";
+}
