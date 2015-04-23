@@ -186,7 +186,7 @@ ol.gradeselection li div, #gradedescriptiontoggle {
 ol.gradeselection li .check { display: none; }
 ol.gradeselection li.selected .check { display: inline-block; }
 #gradedescriptiontoggle { display: inline-block; width: 2em; height: 2em; line-height: 2em; cursor: pointer; }
-#gradedescription { padding: 1em; margin-bottom: 1em; background-color: #f8f8f8; border: 1px solid #e7e7e7; }
+#gradedescription { padding: 4em; margin-bottom: 1em; background-color: #f8f8f8; border: 1px solid #e7e7e7; }
 #grade #gradedescription { display: none; }
 #gradedescription li { margin-top: 1em; line-height: 2em;}
 #gradedescription li:first-child { margin-top: 0em; }
@@ -297,6 +297,7 @@ input.button { padding: 6px 8px; /* Bug fix for Firefox over-riding the line-hei
 	body.rate #main,body.rate #map,body.rate #rate { display: block; }
 	body.rate #rate { padding-left: 0px; padding-top: 1em; }
 	body.rate #map { width: auto; }
+	#gradedescription { padding: 2em; }
 }
 
 @media only screen and (max-width: 640px){
@@ -312,6 +313,7 @@ input.button { padding: 6px 8px; /* Bug fix for Firefox over-riding the line-hei
 	#typeahead li img { float: none; width: 100%; height: auto; display: inline-block; }
 	#typeahead li .desc { display: none; }
 	#typeahead li .title { display: none; }
+	#gradedescription { padding: 1em; }
 }
 
 @media only screen and (max-width: 500px){

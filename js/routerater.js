@@ -71,6 +71,14 @@ RouteRater.prototype.makeMap = function(){
 			maxZoom: 17,
 			errorTileUrl: 'missing.png'
 		});
+		layers.base["Route rater calm"] = L.tileLayer('http://www.strudel.org.uk/routerater/oldtiles/{z}/{x}/{y}.png', {
+			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+				'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+			id: 'examples.map-20v6611k',
+			maxZoom: 17,
+			errorTileUrl: 'missing.png'
+		});
 		this.layers.base["Gray-scale"] = L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
 			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
 				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
