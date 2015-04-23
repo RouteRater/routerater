@@ -8,7 +8,7 @@ $(document).ready(function(){
 	// create a map in the "map" div, set the view to a given place and zoom
 	if(typeof L==="object"){
 		// add an OpenStreetMap tile layer
-		layers.base["Route rater"] = L.tileLayer('../tiles/{z}/{x}/{y}.png', {
+		layers.base["Route rater"] = L.tileLayer('http://www.strudel.org.uk/routerater/tiles/{z}/{x}/{y}.png', {
 			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors & Route Rater',
 			maxZoom: 17,
 			errorTileUrl: 'missing.png'
