@@ -5,6 +5,7 @@ $(document).ready(function(){
 		
 	}
 
+	$('.navbar-nav li').eq(0).after('<li><a href="#" class="togglekey">Key</a></li>')
 	if($('#key').length == 0 && $('#gradedescription').length==0) $('#content').append('<div id="key"><ol id="gradedescription"><li><div class="green box"></div> <strong>Novice</strong>: Off-road/separate to vehicles/gentle gradients</li><li><div class="blue box"></div> Beginner: Some or limited experience. Residential roads/low traffic/slow speeds.</li><li><div class="red box"></div> Intermediate: Busy roads/heavy traffic/filter lanes/big roundabouts/traffic lights/steep hills.</li><li><div class="black box"></div> Extreme: Multi-lane sections/gyratories/lots of experience and luck.</li><li><div class="yellow box"></div> Local authority official routes.</li></ol></div>');
 	var lb = new lightbox('#key','.togglekey',{'max-width': '800px'});
 
