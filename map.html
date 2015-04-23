@@ -6,6 +6,7 @@
 		<link rel="stylesheet" href="leaflet.css" />
 		<script src="js/jquery-1.10.0.min.js"></script>
 		<script src="js/leaflet/leaflet.js"></script>
+		<script src="js/main.js"></script>
 		<script src="js/map.js"></script>
 		<title>Route Rater</title>
 	</head>
@@ -22,13 +23,22 @@
 					<a href="index.html" class="navbar-brand">Route Rater <div id="logo"><div class="green"></div><div class="blue"></div><div class="red"></div><div class="black"></div></div></a>
 				</div><div class="navbar-collapse collapse" id="navbar">
 					<ul class="nav navbar-nav">
-						<li class="active"><a href="map.html">Map</a></li><li class=""><a href="rate/index.html">Rate</a></li><li class=""><a href="http://slowe.github.io/routerater/blog/">Blog</a></li><li class=""><a href="https://github.com/slowe/routerater/">About</a></li><li><a href="https://github.com/slowe/routerater/issues/new?title=Hello&amp;labels=question">Contact</a></li>
+						<li class="active"><a href="map.html">Map</a></li><li><a href="#" class="togglekey">Key</a></li><li class=""><a href="rate/index.html">Rate</a></li><li class=""><a href="https://github.com/slowe/routerater/">About</a></li><li class=""><a href="http://slowe.github.io/routerater/blog/">Blog</a></li><li><a href="https://github.com/slowe/routerater/issues/new?title=Hello&amp;labels=question">Contact</a></li>
 					</ul>
 				</div><!--/.nav-collapse -->
 			</div><!--/.container -->
 		</nav>
 		<div id="content" class="container">
 			<div id="main"></div>
+			<div id="key">
+				<ol id="gradedescription">
+					<li><div class="green box"></div> <strong>Novice</strong>: Off-road/separate to vehicles/gentle gradients</li>
+					<li><div class="blue box"></div> Beginner: Some or limited experience. Residential roads/low traffic/slow speeds.</li>
+					<li><div class="red box"></div> Intermediate: Busy roads/heavy traffic/filter lanes/big roundabouts/traffic lights/steep hills.</li>
+					<li><div class="black box"></div> Extreme: Multi-lane sections/gyratories/lots of experience and luck.</li>
+					<li><div class="yellow box"></div> Local authority official routes.</li>
+				</ol>
+			</div>
 		</div>
 	</body>
 </html>
